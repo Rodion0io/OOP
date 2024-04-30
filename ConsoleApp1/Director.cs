@@ -64,7 +64,7 @@ class Director
 
     public void AddAnimal()
     {
-        AddEntity(zoo.ListAnimals, () =>
+        AddEntity(zoo.GetListAnimals(), () =>
         {
             Console.WriteLine("Animal name:");
             string animalName = Console.ReadLine();
@@ -84,7 +84,7 @@ class Director
 
     public void RemoveAnimal()
     {
-        RemoveEntity(zoo.ListAnimals,
+        RemoveEntity(zoo.GetListAnimals(),
             animal =>
             {
                 Console.WriteLine("Animal name:");
@@ -101,7 +101,7 @@ class Director
 
     public void EditAnimal()
     {
-        EditEntity(zoo.ListAnimals,
+        EditEntity(zoo.GetListAnimals(),
             animal =>
             {
                 Console.WriteLine("Current animal name:");
@@ -122,7 +122,7 @@ class Director
     }
     public void AddVisitor()
     {
-        AddEntity(zoo.ListVisitors, () =>
+        AddEntity(zoo.GetListVisitors(), () =>
         {
             Console.WriteLine("visitor name:");
             string visitorName = Console.ReadLine();
@@ -145,7 +145,7 @@ class Director
 
     public void RemoveVisitor()
     {
-        RemoveEntity(zoo.ListVisitors,
+        RemoveEntity(zoo.GetListVisitors(),
             visitor =>
             {
                 Console.WriteLine("Enter ticket number : ");
@@ -157,7 +157,7 @@ class Director
 
     public void EditVisitor()
     {
-        EditEntity(zoo.ListVisitors,
+        EditEntity(zoo.GetListVisitors(),
             visitor =>
             {
                 Console.WriteLine("Enter ticket number : ");
@@ -188,7 +188,7 @@ class Director
 
     public void AddEmployee()
     {
-        AddEntity(zoo.ListEmployees, () =>
+        AddEntity(zoo.GetListEmployees(), () =>
         {
             Console.WriteLine("Employee name:");
             string employeeName = Console.ReadLine();
@@ -213,7 +213,7 @@ class Director
 
     public void RemoveEmployee()
     {
-        RemoveEntity(zoo.ListEmployees,
+        RemoveEntity(zoo.GetListEmployees(),
             employee =>
             {
                 Console.WriteLine("Endter personal number Employee : ");
@@ -226,7 +226,7 @@ class Director
 
     public void EditEmployee()
     {
-        EditEntity(zoo.ListEmployees,
+        EditEntity(zoo.GetListEmployees(),
             employee =>
             {
                 Console.WriteLine("Endter personal number Employee : ");
@@ -268,7 +268,7 @@ class Director
         Console.WriteLine("Enter animal type: ");
         string animalType = Console.ReadLine();
 
-        var animalStatus = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
+        var animalStatus = zoo.GetListAnimals().FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
 
         if (animalStatus != null)
         {
@@ -289,7 +289,7 @@ class Director
         Console.WriteLine("Enter animal type:");
         string animalType = Console.ReadLine();
 
-        var animalVoice = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
+        var animalVoice = zoo.GetListAnimals().FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
 
         if (animalVoice != null)
         {
@@ -308,7 +308,7 @@ class Director
     {
        Console.WriteLine("Enter number ticket : ");
         string visitorId = Console.ReadLine();
-        var visitorToGetStatus = zoo.ListVisitors.FirstOrDefault(a => a.id == visitorId);
+        var visitorToGetStatus = zoo.GetListVisitors().FirstOrDefault(a => a.id == visitorId);
 
         if (visitorToGetStatus != null)
         {
@@ -328,7 +328,7 @@ class Director
        Console.WriteLine("Enter personal number employee: ");
         string employeeId = Console.ReadLine();
 
-        var employeeToGetStatus = zoo.ListEmployees.FirstOrDefault(a => a.id == employeeId);
+        var employeeToGetStatus = zoo.GetListEmployees().FirstOrDefault(a => a.id == employeeId);
 
         if (employeeToGetStatus != null)
         {
@@ -351,17 +351,17 @@ class Director
         Console.WriteLine("Enter personal number employee: ");
         string employeeId = Console.ReadLine();
 
-        var employeeToAttach = zoo.ListEmployees.FirstOrDefault(a => a.id == employeeId);
+        var employeeToAttach = zoo.GetListEmployees().FirstOrDefault(a => a.id == employeeId);
         if (employeeToAttach != null)
         {
             Console.WriteLine("Enter the name of the animal you want to attach: ");
             string animalName = Console.ReadLine();
             Console.WriteLine("Введите тип животного");
             string animalType = Console.ReadLine();
-            var animal = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
+            var animal = zoo.GetListAnimals().FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
             if(animal != null && !animal.attached)
             {
-                employeeToAttach.animalList.Add(animal);
+                employeeToAttach.AddAnimal(animal);
                 animal.attached = true;
                 Console.WriteLine("The animal is attached");
             }
@@ -375,17 +375,17 @@ class Director
         Console.WriteLine("Enter the employee's personal number: ");
         string employeeId = Console.ReadLine();
 
-        var employeeToAttach = zoo.ListEmployees.FirstOrDefault(a => a.id == employeeId);
+        var employeeToAttach = zoo.GetListEmployees().FirstOrDefault(a => a.id == employeeId);
         if (employeeToAttach != null)
         {
             Console.WriteLine("Enter the name of the animal you want to attach: ");
             string animalName = Console.ReadLine();
             Console.WriteLine("Enter the type of animal");
             string animalType = Console.ReadLine();
-            var animal = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
+            var animal = zoo.GetListAnimals().FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
             if (animal != null)
             {
-                employeeToAttach.animalList.Remove(animal);
+                employeeToAttach.RemoveAnimal(animal);
                 animal.attached = false;
                 Console.WriteLine("The animal is detached");
             }

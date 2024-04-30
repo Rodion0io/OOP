@@ -9,9 +9,9 @@ class Visitor : Human
 {
     public Visitor(string name, Gender gender, string id) : base(name, gender, id)
     {
-        this.name = name;
-        this.gender = gender;
-        this.id = id;
+        // this.name = name;
+        // this.gender = gender;
+        // this.id = id;
     }
     public override void status()
     {

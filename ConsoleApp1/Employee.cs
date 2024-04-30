@@ -6,12 +6,23 @@ class Employee : Human
     public List<Animal>animalList;
     public Employee(string name, Gender gender,string id, string post) : base(name, gender, id )
     {
-        this.name = name;
-        this.gender = gender;
-        this.id = id;
+        // this.name = name;
+        // this.gender = gender;
+        // this.id = id;
         this.post = post;
         animalList = new List<Animal>();
     }
+
+    public void AddAnimal(Animal anim)
+    {
+        animalList.Add(anim);
+    }
+
+    public void RemoveAnimal(Animal anim)
+    {
+        animalList.Remove(anim);
+    }
+    
     public override void status()
     {
         Console.WriteLine($"Name:{name}, Gender:{gender}, Post:{post}");

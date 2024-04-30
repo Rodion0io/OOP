@@ -4,7 +4,7 @@ namespace ConsoleApp1;
 
 class Timee
 {
-    public Zoo zoo;
+    public Zoo zoo { get; }
     private System.Timers.Timer timer;
     public Timee(Zoo zoo)
     {
@@ -12,7 +12,7 @@ class Timee
         timer = new System.Timers.Timer(1000);
         timer.Elapsed += OnTimedEvent;
         timer.AutoReset = true;
-        timer.Enabled = true;
+        timer.Enabled = true;   
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)

@@ -6,15 +6,31 @@ namespace ConsoleApp1;
 
 class Zoo
 {
+
     public List<Animal> ListAnimals;
     public List<Employee> ListEmployees;
     public List<Visitor> ListVisitors;
 
     public Zoo()
     {
-        ListAnimals = new List<Animal>();
+        ListAnimals = new List<Animal>() ;
         ListEmployees = new List<Employee>();
         ListVisitors = new List<Visitor>();
+    }
+
+    public List<Animal> GetListAnimals()
+    {
+        return new List<Animal>(ListAnimals) ;
+    }
+    
+    public List<Employee> GetListEmployees()
+    {
+        return new List<Employee>(ListEmployees) ;
+    }
+    
+    public List<Visitor> GetListVisitors()
+    {
+        return new List<Visitor>(ListVisitors) ;
     }
 
     public void addAnimal(Animal animal)
