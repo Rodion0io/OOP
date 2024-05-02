@@ -38,4 +38,9 @@ abstract partial class Animal
         Console.WriteLine($"Name : {name} current satiety : {satiety}");
         Console.WriteLine($"Name : {name} current satiety : {currentStatus}");
     }
+
+    public void changeAttached()
+    {
+        attached = true;
+    }
 }

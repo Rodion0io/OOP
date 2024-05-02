@@ -27,6 +27,24 @@ class Employee : Human
     {
         Console.WriteLine($"Name:{name}, Gender:{gender}, Post:{post}");
     }
+    
+    public void changeEmployeeName(string newName)
+    {
+        name = newName;
+    }
+
+    public void changeEmployeeGender(string newGender)
+    {
+        if(Enum.TryParse(newGender,out gender))
+        {
+            this.gender = gender;
+        }
+        else
+        {
+            Console.WriteLine("Error");
+            this.gender = Visitor.Gender.Male;
+        }
+    }
 
     public void FeedAnimals(Zoo zoo)
     {
