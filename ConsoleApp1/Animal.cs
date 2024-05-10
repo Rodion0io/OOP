@@ -1,6 +1,6 @@
 namespace ConsoleApp1;
 
-abstract partial class Animal
+public abstract partial class Animal
 {
     public int satiety;
     public int hungerThreshold;

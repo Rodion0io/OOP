@@ -13,7 +13,8 @@ namespace ZooSimulation
             Randomizer generator = new Randomizer();
             Zoo zoo = new Zoo();
             Director direct = new Director(zoo, generator);
-            Timee animalsStarving = new Timee(zoo);
+            
+            direct.generateFirstAnimals();
 
             while (true)
             {
@@ -37,7 +38,9 @@ namespace ZooSimulation
                 Console.WriteLine("17. Zoo status");
                 Console.WriteLine("18. Fix animal to employee");
                 Console.WriteLine("19. Unpin animal");
-                Console.WriteLine("20. exit\n");
+                Console.WriteLine("20. Stop time");
+                Console.WriteLine("21. Resume time");
+                Console.WriteLine("22. exit\n");
 
                 Console.Write("Enter action: ");
                 string input = Console.ReadLine();
@@ -107,6 +110,12 @@ namespace ZooSimulation
                         direct.unpinAnimal();
                         break;
                     case "20":
+                        direct.DirectorStopTime();
+                        break;
+                    case "21":
+                        direct.DirectorStartTime();
+                        break;
+                    case "22":
                         return;
                     default:
                         Console.WriteLine("Error");

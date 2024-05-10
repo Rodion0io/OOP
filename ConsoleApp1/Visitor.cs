@@ -7,11 +7,15 @@ namespace ConsoleApp1;
 
 class Visitor : Human
 {
+
+    public int cash;
+    
     public Visitor(string name, Gender gender, string id) : base(name, gender, id)
     {
         this.name = name;
         this.gender = gender;
         this.id = id;
+        cash = 100;
     }
     public override void status()
     {

@@ -5,11 +5,14 @@ class Director
 
     private Zoo zoo;
     private Randomizer generator;
+    private Timee time;
     public Director(Zoo zoo, Randomizer generator)
     {
         this.zoo = zoo;
         this.generator = generator;
+        this.time = new Timee(zoo);
     }
+    
 
     public void DisplayEntities<T>(IEnumerable<T> entities, Func<T, string> displayFunc, string entityName)
     {
@@ -344,7 +347,7 @@ class Director
         {
             Console.WriteLine("Enter the name of the animal you want to attach: ");
             string animalName = Console.ReadLine();
-            Console.WriteLine("Введите тип животного");
+            Console.WriteLine("Enter animal type");
             string animalType = Console.ReadLine();
             var animal = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
             if(animal != null && !animal.attached)
@@ -380,5 +383,47 @@ class Director
             else { Console.WriteLine("The animal was not found"); }
         }
         else { Console.WriteLine("The employee was not found"); }
+    }
+
+    public void DirectorStartTime()
+    {
+        time.StartTimer();
+        Console.WriteLine("Time has resumed");
+    }
+
+    public void DirectorStopTime()
+    {
+        time.StopTimer();
+        Console.WriteLine("Time has stopped");
+    }
+
+    public void generateFirstAnimals()
+    {
+        string[] animalNames = new string[] { "Pingu", "Pippa", "Penguin", "Percy", "Pip", "Capy", "Cara", "Casper", "Camilla",
+            "Whiskers", "Mittens", "Simba", "Leo", "Cleo", "Misty", "Felix", "Oliver", "Shadow", "Smokey", "Luna"};
+
+        int counter = 0;
+
+        while (counter != 20)
+        {
+            string generateName = animalNames[generator.RandomNameAnimal()];
+            int typeAnimal = generator.RandomTypeAnimal();
+
+            if (typeAnimal == 1)
+            {
+                zoo.ListAnimals.Add(new Cat(generateName));
+                counter++;
+            }
+            else if (typeAnimal == 2)
+            {
+                zoo.ListAnimals.Add(new Penguin(generateName));
+                counter++;
+            }
+            else if (typeAnimal == 3)
+            {
+                zoo.ListAnimals.Add(new Kapibara(generateName));
+                counter++;
+            }
+        }
     }
 }

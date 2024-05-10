@@ -12,11 +12,16 @@ class Timee
         timer = new System.Timers.Timer(1000);
         timer.Elapsed += OnTimedEvent;
         timer.AutoReset = true;
-        timer.Enabled = true;   
+        timer.Enabled = true;
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)
     {
+        if (timer.Enabled == false)
+        {
+            return;
+        }
+        
         bool AnimalsIsHungry = false;
         foreach (var animal in zoo.ListAnimals)
         {
@@ -37,5 +42,16 @@ class Timee
             }
             AnimalsIsHungry = false;
         }
+    }
+
+    public void StopTimer()
+    {
+        timer.Enabled = false;
+        
+    }
+
+    public void StartTimer()
+    {
+        timer.Enabled = true;
     }
 }

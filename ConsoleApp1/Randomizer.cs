@@ -8,4 +8,19 @@ class Randomizer
     {
         return rnd.Next(minValue, maxValue);
     }
+
+    public int RandomTypeAnimal()
+    {
+        return rnd.Next(1, 3);
+    }
+
+    public int RandomNameAnimal()
+    {
+        return rnd.Next(0, 20);
+    }
+
+    public int RandomOpenOrClose()
+    {
+        return rnd.Next(0, 1);
+    }
 }
