@@ -6,6 +6,7 @@ class Director
     private Zoo zoo;
     private Randomizer generator;
     private Timee time;
+    private Aviary aviary;
     public Director(Zoo zoo, Randomizer generator)
     {
         this.zoo = zoo;
@@ -337,6 +338,11 @@ class Director
         zoo.status();
     }
 
+    public void getAviaryStatus()
+    {
+        aviary.Status();
+    }
+
     public void attachAnimal()
     {
         Console.WriteLine("Enter personal number employee: ");
@@ -403,27 +409,97 @@ class Director
             "Whiskers", "Mittens", "Simba", "Leo", "Cleo", "Misty", "Felix", "Oliver", "Shadow", "Smokey", "Luna"};
 
         int counter = 0;
+        
+        Aviary firstAviary = new Aviary("Cat", 15, 1, false,
+            new List<Animal>(), new List<Animal>(), new List<Animal>());
+        Aviary secondAviary = new Aviary("Kapibara", 10, 2, false,
+            new List<Animal>(), new List<Animal>(), new List<Animal>());
+        Aviary thirdAviary = new Aviary("Penguin", 8, 3, false,
+            new List<Animal>(), new List<Animal>(), new List<Animal>());
 
         while (counter != 20)
         {
             string generateName = animalNames[generator.RandomNameAnimal()];
             int typeAnimal = generator.RandomTypeAnimal();
 
-            if (typeAnimal == 1)
+            
+            
+            
+            if (typeAnimal == 1 && firstAviary.aviary.Count < firstAviary.animalLimit)
             {
-                zoo.ListAnimals.Add(new Cat(generateName));
+                Cat cat = new Cat(generateName);
+                zoo.ListAnimals.Add(cat);
+                firstAviary.AddAnimal(cat);
+                int generateNumber = generator.RandomOpenOrClose();
+                if (generateNumber == 0)
+                {
+                    firstAviary.openPart.Add(cat);
+                }
+                else
+                {
+                    firstAviary.closePart.Add(cat);
+                }
                 counter++;
             }
-            else if (typeAnimal == 2)
+            else if (typeAnimal == 2 && secondAviary.aviary.Count < secondAviary.animalLimit)
             {
-                zoo.ListAnimals.Add(new Penguin(generateName));
+                Penguin penguin = new Penguin(generateName);
+                zoo.ListAnimals.Add(penguin);
+                secondAviary.AddAnimal(penguin);
+                int generateNumber = generator.RandomOpenOrClose();
+                if (generateNumber == 0)
+                {
+                    secondAviary.openPart.Add(penguin);
+                }
+                else
+                {
+                    secondAviary.closePart.Add(penguin);
+                }
                 counter++;
+                zoo.addAviary(secondAviary);
             }
-            else if (typeAnimal == 3)
+            else if (typeAnimal == 3 && thirdAviary.aviary.Count < thirdAviary.animalLimit)
             {
-                zoo.ListAnimals.Add(new Kapibara(generateName));
+                Kapibara kapibara = new Kapibara(generateName);
+                zoo.ListAnimals.Add(kapibara);
+                thirdAviary.AddAnimal(kapibara);
+                int generateNumber = generator.RandomOpenOrClose();
+                if (generateNumber == 0)
+                {
+                    thirdAviary.openPart.Add(kapibara);
+                }
+                else
+                {
+                    thirdAviary.closePart.Add(kapibara);
+                }
                 counter++;
+                zoo.addAviary(thirdAviary);
             }
         }
     }
+
+    public void attachAviary()
+    {
+        Console.WriteLine("Enter personal number employee: ");
+        string employeeId = Console.ReadLine(); 
+        Console.WriteLine("Enter number aviary");
+
+        var employeeToAttach = zoo.ListEmployees.FirstOrDefault(a => a.id == employeeId);
+        if (employeeToAttach != null)
+        {
+            Console.WriteLine("Enter number aviary: ");
+            int avairyNumber = int.Parse(Console.ReadLine());
+            var aviary = zoo.ListAviary.FirstOrDefault(a => a.aviaryNumber == avairyNumber);
+            if(aviary != null && !aviary.attached)
+            {
+                employeeToAttach.aviaryList.Add(aviary);
+                aviary.changeAttached();
+                Console.WriteLine("The aviary is attached");
+            }
+            else { Console.WriteLine("The aviary has not been found or it has already been assigned to an employee"); }
+        }
+        else { Console.WriteLine("The employee was not found"); }
+    }
+
+
 }

@@ -10,6 +10,7 @@ class Zoo
     public List<Animal> ListAnimals;
     public List<Employee> ListEmployees;
     public List<Visitor> ListVisitors;
+    public List<Aviary> ListAviary;
     
 
     public Zoo()
@@ -17,7 +18,7 @@ class Zoo
         ListAnimals = new List<Animal>() ;
         ListEmployees = new List<Employee>();
         ListVisitors = new List<Visitor>();
-        
+        ListAviary = new List<Aviary>();
     }
 
     public void addAnimal(Animal animal)
@@ -33,6 +34,11 @@ class Zoo
     public void addVisitor(Visitor visitor)
     {
         ListVisitors.Add(visitor);
+    }
+
+    public void addAviary(Aviary aviary)
+    {
+        ListAviary.Add(aviary);
     }
 
     public void status()

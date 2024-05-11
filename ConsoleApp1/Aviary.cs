@@ -1,126 +1,92 @@
 namespace ConsoleApp1;
 
-interface IOpenAviary
-{
-    List<Animal> CreateOpenAviary();
-    void AddToOpenAviaryAnim(Animal animal);
-    void DeleteOpenAviaryAnim(Animal animal);
-}
-
-interface ICloseAviary
-{
-    List<Animal> CreatCloseAviary();
-    void AddToCloseAviaryAnim(Animal animal);
-    void DeleteCloseAviaryAnim(Animal animal);
-}
-
 interface IOperations
 {
-    void ClearAviary();
     void Status();
-    // void recoveryАoodSupply();
+    void AddAnimal(Animal animal);
+    void DeleteAnimal(Animal animal);
+    void ClearAviary();
+    void FeedAnimal();
+    void changeAttached();
+    void maxFeedLevel();
+    
 }
 
-
-public class Aviary : IOpenAviary, ICloseAviary, IOperations
+public class Aviary: IOperations
 {
     public string typeAnimal;
-    public int limit;
-    public int foodSupply;
+    public int animalLimit;
+    public int feedLevel;
+    public int aviaryNumber;
     public bool attached;
+    public List<Animal> openPart;
+    public List<Animal> closePart;
+    public List<Animal> aviary;
+    private Zoo zoo;
+    
 
-    public Aviary(string typeAnimal, int limit, int foodSupply, bool attached)
+    public Aviary(string typeAnimal, int animalLimit, int aviaryNumber, bool attached, List<Animal> openPart,
+        List<Animal> closePart, List<Animal> aviary)
     {
         this.typeAnimal = typeAnimal;
-        this.limit = limit;
-        foodSupply = 250;
-        attached = false;
+        this.animalLimit = animalLimit;
+        feedLevel = 250;
+        this.aviaryNumber = aviaryNumber;
+        this.attached = false;
+        this.openPart = new List<Animal>();
+        this.closePart = new List<Animal>();
+        this.aviary = new List<Animal>();
+        this.zoo = zoo;
     }
 
+    
     public void Status()
     {
-        Console.WriteLine($"This aviary is inhabited by {typeAnimal}. Food supply is composed {foodSupply}");
+        Console.WriteLine($"This aviary {typeAnimal} is inhabiting. Current feed level: {feedLevel}");
     }
 
-    public List<Animal> CreateOpenAviary()
+    public void AddAnimal(Animal animal)
     {
-        List<Animal> OpenAviary = new List<Animal>();
-        return OpenAviary;
-    }
-
-    public List<Animal> CreatCloseAviary()
-    {
-        List<Animal> CloseAviary = new List<Animal>();
-        return CloseAviary;
-    }
-
-    public void AddToOpenAviaryAnim(Animal animal)
-    {
-        if (animal.GetType().Name == CreateOpenAviary()[0].GetType().Name)
+        if (aviary.Count < animalLimit && aviary.Count != 0)
         {
-            CreateOpenAviary().Add(animal);
+            if (aviary[0].GetType().Name == animal.GetType().Name)
+            {
+                aviary.Add(animal);
+                // zoo.ListAnimals.Add(animal); Здесь под вопросом.
+            }
         }
-        else if (CreateOpenAviary().Count == 0)
+        else if (aviary.Count > animalLimit)
         {
-            CreateOpenAviary().Add(animal);
-        }
-        else
-        {
-            Console.WriteLine("We can't add this animal here.");
+            Console.WriteLine("Error! Add new aviary");
         }
     }
 
-    public void AddToCloseAviaryAnim(Animal animal)
+    public void DeleteAnimal(Animal animal)
     {
-        if (animal.GetType().Name == CreateOpenAviary()[0].GetType().Name)
-        {
-            CreateOpenAviary().Add(animal);
-        }
-        else if (CreateOpenAviary().Count == 0)
-        {
-            CreateOpenAviary().Add(animal);
-        }
-        else
-        {
-            Console.WriteLine("We can't add this animal here.");
-        }
-    }
-
-    public void DeleteOpenAviaryAnim(Animal animal)
-    {
-        if (animal.GetType().Name == CreateOpenAviary()[0].GetType().Name)
-        {
-            CreateOpenAviary().Remove(animal);
-        }
-        else if (CreateOpenAviary().Count == 0)
-        {
-            CreateOpenAviary().Remove(animal);
-        }
-        else
-        {
-            Console.WriteLine("We can't add this animal here.");
-        }
-    }
-
-    public void DeleteCloseAviaryAnim(Animal animal)
-    {
-        if (animal.GetType().Name == CreateOpenAviary()[0].GetType().Name)
-        {
-            CreateOpenAviary().Remove(animal);
-        }
-        else if (CreateOpenAviary().Count == 0)
-        {
-            CreateOpenAviary().Remove(animal);
-        }
-        else
-        {
-            Console.WriteLine("We can't add this animal here.");
-        }
+        aviary.Remove(animal);
+        // zoo.ListAnimals.Remove(animal); Здесь под вопросом.
     }
 
     public void ClearAviary()
     {
-        CreateOpenAviary().Clear();
-        CreatCloseAviary().Clear();
+        // zoo.ListAnimals.RemoveAll(item => aviary.Contains(item)); Под вопросом
+        openPart.Clear();
+        closePart.Clear();
+        aviary.Clear();
+    }
+
+    public void FeedAnimal()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void changeAttached()
+    {
+        attached = true;
+    }
+
+    public void maxFeedLevel()
+    {
+        feedLevel = 250;
     }
 }

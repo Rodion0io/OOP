@@ -4,6 +4,7 @@ class Employee : Human
 {
     public string post;
     public List<Animal>animalList;
+    public List<Aviary> aviaryList;
     public Employee(string name, Gender gender,string id, string post) : base(name, gender, id )
     {
         // this.name = name;
@@ -11,6 +12,7 @@ class Employee : Human
         // this.id = id;
         this.post = post;
         animalList = new List<Animal>();
+        aviaryList = new List<Aviary>();
     }
 
     public void AddAnimal(Animal anim)
@@ -43,6 +45,19 @@ class Employee : Human
         {
             Console.WriteLine("Error");
             this.gender = Visitor.Gender.Male;
+        }
+    }
+
+    public void maintainingTheFeedLevel(Zoo zoo)
+    {
+        foreach (var aviar in aviaryList)
+        {
+            if (aviar.feedLevel != 250)
+            {
+                aviar.maxFeedLevel();
+                Console.WriteLine("The feed level has been restored");
+                break;
+            }
         }
     }
 

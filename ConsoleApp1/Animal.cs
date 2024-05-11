@@ -33,6 +33,7 @@ public abstract partial class Animal
     {
         currentStatus = (satiety > hungerThreshold ? hungerStatus.wellFed : hungerStatus.hungry);
     }
+    
     public void status()
     {
         Console.WriteLine($"Name : {name} current satiety : {satiety}");

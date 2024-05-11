@@ -40,7 +40,8 @@ namespace ZooSimulation
                 Console.WriteLine("19. Unpin animal");
                 Console.WriteLine("20. Stop time");
                 Console.WriteLine("21. Resume time");
-                Console.WriteLine("22. exit\n");
+                Console.WriteLine("22. Aviary status");
+                Console.WriteLine("23. exit\n");
 
                 Console.Write("Enter action: ");
                 string input = Console.ReadLine();
@@ -116,6 +117,9 @@ namespace ZooSimulation
                         direct.DirectorStartTime();
                         break;
                     case "22":
+                        direct.getAviaryStatus();
+                        break;
+                    case "23":
                         return;
                     default:
                         Console.WriteLine("Error");
