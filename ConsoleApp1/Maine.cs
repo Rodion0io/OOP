@@ -13,7 +13,7 @@ namespace ZooSimulation
             Randomizer generator = new Randomizer();
             Zoo zoo = new Zoo();
             Director direct = new Director(zoo, generator);
-            Timee animalsStarving = new Timee(zoo);
+            
 
             while (true)
             {

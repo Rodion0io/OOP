@@ -6,6 +6,7 @@ class Timee
 {
     public Zoo zoo { get; }
     private System.Timers.Timer timer;
+    private Aviary aviary;
     public Timee(Zoo zoo)
     {
         this.zoo = zoo;
@@ -30,11 +31,16 @@ class Timee
 
         if (AnimalsIsHungry)
         {
-            foreach (var employee in zoo.ListEmployees)
+            foreach (var anim in zoo.ListAnimals)
             {
-                employee.FeedAnimals(zoo);
+                if (anim.animalNumber == aviary.aviaryNumber)
+                {
+                    aviary.FeedAnimal(anim);
+                }
             }
             AnimalsIsHungry = false;
         }
     }
+    
+    
 }

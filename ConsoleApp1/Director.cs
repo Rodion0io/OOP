@@ -5,10 +5,13 @@ class Director
 
     private Zoo zoo;
     private Randomizer generator;
+    public IOperationsWithAviary operationAviary;
+    private Aviary aviary;
     public Director(Zoo zoo, Randomizer generator)
     {
         this.zoo = zoo;
         this.generator = generator;
+        aviary = aviary;
     }
 
     public void DisplayEntities<T>(IEnumerable<T> entities, Func<T, string> displayFunc, string entityName)
@@ -74,9 +77,9 @@ class Director
 
             switch (animalType.ToLower())
             {
-                case "cat": return new Cat(animalName);
-                case "penguin": return new Penguin(animalName);
-                case "kapibara": return new Kapibara(animalName);
+                case "cat": return new Cat(animalName, 0);
+                case "penguin": return new Penguin(animalName, 0);
+                case "kapibara": return new Kapibara(animalName, 0);
                 default: throw new ArgumentException("Error");
             }
         }, "animal");
@@ -381,4 +384,6 @@ class Director
         }
         else { Console.WriteLine("The employee was not found"); }
     }
+    
+    
 }

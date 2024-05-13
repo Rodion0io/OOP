@@ -3,7 +3,8 @@ namespace ConsoleApp1;
 class Employee : Human
 {
     public string post;
-    public List<Animal>animalList;
+    public List<Animal> animalList;
+    public List<Aviary> aviaryList;
     public Employee(string name, Gender gender,string id, string post) : base(name, gender, id )
     {
         // this.name = name;
@@ -11,6 +12,7 @@ class Employee : Human
         // this.id = id;
         this.post = post;
         animalList = new List<Animal>();
+        aviaryList = new List<Aviary>();
     }
 
     public void AddAnimal(Animal anim)
@@ -58,4 +60,6 @@ class Employee : Human
             }
         }
     }
+    
+    
 }

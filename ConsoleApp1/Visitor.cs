@@ -35,9 +35,5 @@ class Visitor : Human
             this.gender = Visitor.Gender.Male;
         }
     }
-
-    // public string message()
-    // {
-    //     return $"Name: {this.name} gender: {this.gender}" + $" number ticket: {this.id}, visiters";
-    // }
+    
 }

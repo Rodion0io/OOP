@@ -1,13 +1,15 @@
 namespace ConsoleApp1;
 
-interface IOperationsWithAviary
+public interface IOperationsWithAviary
 {
     void AddInAviary(Animal animal);
     void DeleteFromAviary(Animal animal);
     void GoToOpen(Animal animal);
     void GoToClose(Animal animal);
-    // void AviaryStatus(int aviaryNumber);
+    void AviaryStatus(int aviaryNumber);
     void FeedAnimal(Animal animal);
+    void RecoveryFeed();
+    void VisitorFeed(Animal animal);
 }
 
 public class Aviary : IOperationsWithAviary
@@ -21,6 +23,7 @@ public class Aviary : IOperationsWithAviary
     public IOpen openAviary;
     public IClose closeAviary;
     private Zoo zoo;
+    
 
     public Aviary(int aviaryNumber)
     {
@@ -31,6 +34,7 @@ public class Aviary : IOperationsWithAviary
         ListAviary = new List<Animal>();
         zoo = zoo;
         random = random;
+        
     }
 
     public void AddInAviary(Animal animal)
@@ -124,13 +128,10 @@ public class Aviary : IOperationsWithAviary
         }
     }
 
-    // public void AviaryStatus(int aviaryNumber)
-    // {
-    //     foreach (var aviary in zoo.ListAviaries)
-    //     {
-    //         
-    //     }
-    // }
+    public void AviaryStatus(int aviaryNumber)
+    {
+        Console.WriteLine($"In this aviary there are {ListAviary[0].GetType().Name}s. Current feed container is {feedContainer}");
+    }
 
     public void FeedAnimal(Animal animal)
     {
@@ -141,5 +142,18 @@ public class Aviary : IOperationsWithAviary
             animal.updateStatus();
         }
     }
-    
+
+    public void RecoveryFeed()
+    {
+        feedContainer = 1000;
+    }
+
+    public void VisitorFeed(Animal animal)
+    {
+        if (animal.currentStatus == Animal.hungerStatus.hungry)
+        {
+            animal.feed();
+            animal.updateStatus();
+        }
+    }
 }
