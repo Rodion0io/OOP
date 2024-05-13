@@ -384,6 +384,38 @@ class Director
         }
         else { Console.WriteLine("The employee was not found"); }
     }
-    
-    
+
+    public void GenerateFirstPart()
+    {
+        string[] animalNames = new string[] { "Pingu", "Pippa", "Penguin", "Percy", "Pip", "Capy", "Cara", "Casper", "Camilla",
+            "Whiskers", "Mittens", "Simba", "Leo", "Cleo", "Misty", "Felix", "Oliver", "Shadow", "Smokey", "Luna"};
+
+        int counter = 0;
+
+        Aviary firstAviary = new Aviary(generator.RandomVal());
+        Aviary secondAviary = new Aviary(generator.RandomVal());
+        Aviary thirdAviary = new Aviary(generator.RandomVal());
+
+        while (counter != 0)
+        {
+            string generateName = animalNames[generator.RandomTypeAnimal()];
+            int typeAnimal = generator.RandomTypeAnimal();
+
+            if (typeAnimal == 1)
+            {
+                firstAviary.AddInAviary(new Cat(generateName, firstAviary.aviaryNumber));
+                counter++;
+            }
+            else if (typeAnimal == 2)
+            {
+                secondAviary.AddInAviary(new Penguin(generateName, secondAviary.aviaryNumber));
+                counter++;
+            }
+            else if (typeAnimal == 3)
+            {
+                thirdAviary.AddInAviary(new Kapibara(generateName, thirdAviary.aviaryNumber));
+                counter++;
+            }
+        }
+    }
 }

@@ -18,6 +18,11 @@ class Timee
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)
     {
+        if (timer.Enabled == false)
+        {
+            return;
+        }
+        
         bool AnimalsIsHungry = false;
         foreach (var animal in zoo.ListAnimals)
         {
@@ -41,6 +46,14 @@ class Timee
             AnimalsIsHungry = false;
         }
     }
-    
-    
+
+    public void StopTimer()
+    {
+        timer.Enabled = false;
+    }
+
+    public void StartTimer()
+    {
+        timer.Enabled = true;
+    }
 }
