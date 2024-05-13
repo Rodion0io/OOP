@@ -11,6 +11,6 @@ class Cat : Animal
     
     public override void voiceCommand()
     {
-        Console.WriteLine("Chipi chipi chapa chapa");
+        Console.WriteLine("Chipi chipi chapa");
     }
 }

@@ -1,6 +1,6 @@
 namespace ConsoleApp1;
 
-public abstract partial class Animal
+abstract partial class Animal
 {
     public int satiety;
     public int hungerThreshold;
@@ -33,7 +33,6 @@ public abstract partial class Animal
     {
         currentStatus = (satiety > hungerThreshold ? hungerStatus.wellFed : hungerStatus.hungry);
     }
-    
     public void status()
     {
         Console.WriteLine($"Name : {name} current satiety : {satiety}");
