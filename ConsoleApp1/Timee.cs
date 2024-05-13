@@ -33,7 +33,6 @@ class Timee
             foreach (var employee in zoo.ListEmployees)
             {
                 employee.FeedAnimals(zoo);
-
             }
             AnimalsIsHungry = false;
         }

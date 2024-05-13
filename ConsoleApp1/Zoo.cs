@@ -10,12 +10,14 @@ class Zoo
     public List<Animal> ListAnimals;
     public List<Employee> ListEmployees;
     public List<Visitor> ListVisitors;
+    public List<Aviary> ListAviaries;
 
     public Zoo()
     {
         ListAnimals = new List<Animal>() ;
         ListEmployees = new List<Employee>();
         ListVisitors = new List<Visitor>();
+        ListAviaries = new List<Aviary>();
     }
 
     public List<Animal> GetListAnimals()
@@ -33,6 +35,11 @@ class Zoo
         return new List<Visitor>(ListVisitors) ;
     }
 
+    public List<Aviary> GetListAviary()
+    {
+        return new List<Aviary>(ListAviaries);
+    }
+
     public void addAnimal(Animal animal)
     {
         ListAnimals.Add(animal);
@@ -46,6 +53,11 @@ class Zoo
     public void addVisitor(Visitor visitor)
     {
         ListVisitors.Add(visitor);
+    }
+    
+    public void addAviaries(Aviary aviary)
+    {
+        ListAviaries.Add(aviary);
     }
 
     public void status()

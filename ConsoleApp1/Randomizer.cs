@@ -8,4 +8,11 @@ class Randomizer
     {
         return rnd.Next(minValue, maxValue);
     }
+
+    public int RandomPartOfAviary()
+    {
+        return rnd.Next(0, 2);
+    }
+    
+    
 }

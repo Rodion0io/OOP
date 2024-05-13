@@ -1,6 +1,6 @@
 namespace ConsoleApp1;
 
-abstract partial class Animal
+public abstract partial class Animal
 {
     public int satiety;
     public int hungerThreshold;
@@ -26,7 +26,7 @@ abstract partial class Animal
     public abstract void voiceCommand();
     public void feed()
     {
-        satiety = 70;
+        satiety = 100;
     }
 
     public void updateStatus()
