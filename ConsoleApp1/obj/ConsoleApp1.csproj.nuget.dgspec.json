@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/rodionrybko/RiderProjects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj": {}
+    "/Users/rodionrybko/RiderProjects/Zoo/ConsoleApp1/ConsoleApp1.csproj": {}
   },
   "projects": {
-    "/Users/rodionrybko/RiderProjects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj": {
+    "/Users/rodionrybko/RiderProjects/Zoo/ConsoleApp1/ConsoleApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/rodionrybko/RiderProjects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj",
+        "projectUniqueName": "/Users/rodionrybko/RiderProjects/Zoo/ConsoleApp1/ConsoleApp1.csproj",
         "projectName": "ConsoleApp1",
-        "projectPath": "/Users/rodionrybko/RiderProjects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj",
+        "projectPath": "/Users/rodionrybko/RiderProjects/Zoo/ConsoleApp1/ConsoleApp1.csproj",
         "packagesPath": "/Users/rodionrybko/.nuget/packages/",
-        "outputPath": "/Users/rodionrybko/RiderProjects/ConsoleApp1/ConsoleApp1/obj/",
+        "outputPath": "/Users/rodionrybko/RiderProjects/Zoo/ConsoleApp1/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/rodionrybko/.nuget/NuGet/NuGet.Config"

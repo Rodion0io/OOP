@@ -11,7 +11,7 @@ public class CloseAviary : IClose
 {
     public List<Animal> ListCloseAviary;
 
-    public CloseAviary(List<Animal> ListCloseAviary)
+    public CloseAviary()
     {
         ListCloseAviary = new List<Animal>();
     }

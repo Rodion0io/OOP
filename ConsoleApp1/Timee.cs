@@ -6,7 +6,8 @@ class Timee
 {
     public Zoo zoo { get; }
     private System.Timers.Timer timer;
-    private Aviary aviary;
+    private Employee _employee;
+    private IOperationsAviary _operationsAviary;
     public Timee(Zoo zoo)
     {
         this.zoo = zoo;
@@ -22,38 +23,28 @@ class Timee
         {
             return;
         }
-        
-        bool AnimalsIsHungry = false;
-        foreach (var animal in zoo.ListAnimals)
+        foreach (Animal animal in zoo.ListAnimals)
         {
-            animal.satiety -= 1;
-            animal.updateStatus();
-            if (animal.currentStatus == Animal.hungerStatus.hungry)
+            if (animal.currentStatus == Animal.hungerStatus.wellFed)
             {
-                AnimalsIsHungry = true;
+                animal.satiety -= 1;
+                animal.updateStatus();
             }
-        }
-
-        if (AnimalsIsHungry)
-        {
-            foreach (var anim in zoo.ListAnimals)
+            else
             {
-                if (anim.animalNumber == aviary.aviaryNumber)
-                {
-                    aviary.FeedAnimal(anim);
-                }
+                animal.avair.FeedAnimal(animal);
             }
-            AnimalsIsHungry = false;
         }
     }
 
-    public void StopTimer()
-    {
-        timer.Enabled = false;
-    }
-
-    public void StartTimer()
+    public void StartTime()
     {
         timer.Enabled = true;
     }
+
+    public void StopTime()
+    {
+        timer.Enabled = false;
+    }
+    
 }

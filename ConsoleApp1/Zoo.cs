@@ -4,20 +4,20 @@ using System.Text;
 using System.Threading.Tasks;
 namespace ConsoleApp1;
 
-class Zoo
+public class Zoo
 {
 
     public List<Animal> ListAnimals;
     public List<Employee> ListEmployees;
     public List<Visitor> ListVisitors;
-    public List<Aviary> ListAviaries;
+    public List<IOperationsAviary> ListAviary;
 
     public Zoo()
     {
         ListAnimals = new List<Animal>() ;
         ListEmployees = new List<Employee>();
         ListVisitors = new List<Visitor>();
-        ListAviaries = new List<Aviary>();
+        ListAviary = new List<IOperationsAviary>();
     }
 
     public List<Animal> GetListAnimals()
@@ -35,9 +35,9 @@ class Zoo
         return new List<Visitor>(ListVisitors) ;
     }
 
-    public List<Aviary> GetListAviary()
+    public List<IOperationsAviary> GetListAviary()
     {
-        return new List<Aviary>(ListAviaries);
+        return new List<IOperationsAviary>(ListAviary);
     }
 
     public void addAnimal(Animal animal)
@@ -53,11 +53,6 @@ class Zoo
     public void addVisitor(Visitor visitor)
     {
         ListVisitors.Add(visitor);
-    }
-    
-    public void addAviaries(Aviary aviary)
-    {
-        ListAviaries.Add(aviary);
     }
 
     public void status()

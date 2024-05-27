@@ -4,7 +4,7 @@ class Cat : Animal
 {
     protected override int defaultHungerThreshold => 30;
 
-    public Cat(string name, int animalNumber) : base(name, animalNumber)
+    public Cat(string name) : base(name)
     {
         
     }

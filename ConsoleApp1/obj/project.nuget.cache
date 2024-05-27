@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "75J4YJOTivSdKb9iocBWTj20Cvq1FSc8NLCoQFPb+CYDK4KORbr780riyBzEITBKnwU8LEju+GYO1mgevCbRqA==",
+  "dgSpecHash": "KlKnIWzXU4osiZ9jP3Kni0aM4UhYAL00BSawXKQsSuvyp7oDvqE8K4woFtae8NqWy6FAFGmIMBkduXtB6ICVsQ==",
   "success": true,
-  "projectFilePath": "/Users/rodionrybko/RiderProjects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj",
+  "projectFilePath": "/Users/rodionrybko/RiderProjects/Zoo/ConsoleApp1/ConsoleApp1.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

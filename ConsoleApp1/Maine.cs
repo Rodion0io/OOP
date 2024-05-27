@@ -14,6 +14,7 @@ namespace ZooSimulation
             Zoo zoo = new Zoo();
             Director direct = new Director(zoo, generator);
             
+            direct.GenerateFirstAnimal();
 
             while (true)
             {
@@ -23,7 +24,7 @@ namespace ZooSimulation
                 Console.WriteLine("3. Display a list of visitor");
                 Console.WriteLine("4. Add animal");
                 Console.WriteLine("5. Redact animal");
-                Console.WriteLine("6. Redact animal");
+                Console.WriteLine("6. Delete animal");
                 Console.WriteLine("7. Add employee");
                 Console.WriteLine("8. Redact employee");
                 Console.WriteLine("9. Delete employee");
@@ -35,9 +36,15 @@ namespace ZooSimulation
                 Console.WriteLine("15. Employee status");
                 Console.WriteLine("16. Visiter status");
                 Console.WriteLine("17. Zoo status");
-                Console.WriteLine("18. Fix animal to employee");
+                Console.WriteLine("18. Fix aviary to employee");
                 Console.WriteLine("19. Unpin animal");
-                Console.WriteLine("20. exit\n");
+                Console.WriteLine("20. Start timer");
+                Console.WriteLine("21. Stop timer");
+                Console.WriteLine("22. Show aviaryes");
+                Console.WriteLine("23. Aviary status");
+                Console.WriteLine("24. New aviary");
+                Console.WriteLine("25. Add animal in aviary");
+                Console.WriteLine("26. exit\n");
 
                 Console.Write("Enter action: ");
                 string input = Console.ReadLine();
@@ -51,7 +58,7 @@ namespace ZooSimulation
                     case "2":
                         direct.DisplayEntities(zoo.ListEmployees, employee => $"Name: {employee.name} Gender: {employee.gender}" +
                         $" Personal number: {employee.id} post: {employee.post}" +
-                        $" fix animal: {employee.animalList}", "employees");
+                        $" fix aviary: {employee.aviaryList}", "employees");
                         break;
 
                     case "3":
@@ -65,7 +72,7 @@ namespace ZooSimulation
                         direct.EditAnimal();
                         break;
                     case "6":
-                        direct.RemoveAnimal();
+                        direct.RemoveAnimalWithDelete();
                         break;
                     case "7":
                         direct.AddEmployee();
@@ -107,6 +114,24 @@ namespace ZooSimulation
                         direct.unpinAnimal();
                         break;
                     case "20":
+                        direct.StartTimer();
+                        break;
+                    case "21":
+                        direct.StopTimer();
+                        break;
+                    case "22":
+                        direct.ReturnListAviares();
+                        break;
+                    case "23":
+                        direct.AviaryStatus();
+                        break;
+                    case "24":
+                        direct.NewAviary();
+                        break;
+                    case "25":
+                        direct.AddAnimalInAviary();
+                        break;
+                    case "26":
                         return;
                     default:
                         Console.WriteLine("Error");

@@ -9,23 +9,25 @@ class Randomizer
         return rnd.Next(minValue, maxValue);
     }
 
-    public int RandomPartOfAviary()
+    public int RandomPartAviary()
     {
-        return rnd.Next(0, 2);
+        return rnd.Next(0, 1);
+    }
+
+    public int RandovNumberForAviary()
+    {
+        return rnd.Next(0, 100);
     }
 
     public int RandomNameNumber()
     {
-        return rnd.Next(0, 20);
+        return rnd.Next(1, 20);
     }
 
     public int RandomTypeAnimal()
     {
         return rnd.Next(1, 4);
     }
-
-    public int RandomVal()
-    {
-        return rnd.Next(1, 51);
-    }
+    
+    
 }

@@ -1,6 +1,6 @@
 namespace ConsoleApp1;
 
-abstract class Human
+public abstract class Human
 {
     public enum Gender
     {

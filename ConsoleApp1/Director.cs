@@ -5,13 +5,20 @@ class Director
 
     private Zoo zoo;
     private Randomizer generator;
-    public IOperationsWithAviary operationAviary;
-    private Aviary aviary;
+    private Timee animalsStarving;
+    private IOperationsAviary OperationsAviary;
+    private IOperationsAviary firstAviary;
+    private IOperationsAviary secondAviary;
+    private IOperationsAviary thirdAviary;
     public Director(Zoo zoo, Randomizer generator)
     {
         this.zoo = zoo;
         this.generator = generator;
-        aviary = aviary;
+        animalsStarving = new Timee(zoo);
+        OperationsAviary = new Aviary(0,zoo);
+        firstAviary = new Aviary(1,zoo);
+        secondAviary = new Aviary(2,zoo);
+        thirdAviary = new Aviary(3,zoo);
     }
 
     public void DisplayEntities<T>(IEnumerable<T> entities, Func<T, string> displayFunc, string entityName)
@@ -77,29 +84,66 @@ class Director
 
             switch (animalType.ToLower())
             {
-                case "cat": return new Cat(animalName, 0);
-                case "penguin": return new Penguin(animalName, 0);
-                case "kapibara": return new Kapibara(animalName, 0);
+                case "cat": return new Cat(animalName);
+                case "penguin": return new Penguin(animalName);
+                case "kapibara": return new Kapibara(animalName);
                 default: throw new ArgumentException("Error");
             }
         }, "animal");
     }
 
-    public void RemoveAnimal()
+    public void AddAnimalInAviary()
     {
-        RemoveEntity(zoo.ListAnimals,
-            animal =>
+        Console.WriteLine("Enter name: ");
+        string animalName = Console.ReadLine();
+        
+        Console.WriteLine("Animal type (Cat, Penguin, kapibara):");
+        string animalType = Console.ReadLine();
+        
+        Console.WriteLine("Enter the aviary number");
+        int aviaryNumber = int.Parse(Console.ReadLine());
+        
+        var avia = zoo.ListAviary.FirstOrDefault(a => a.GetNumberAviary() == aviaryNumber);
+
+        if (avia != null)
+        {
+            switch (animalType.ToLower())
             {
-                Console.WriteLine("Animal name:");
-                string animalName = Console.ReadLine();
+                case "cat":
+                    avia.AddAnimal(new Cat(animalName));
+                    break;
+                case "penguin":
+                    avia.AddAnimal(new Penguin(animalName));
+                    break;
+                case "kapibara":
+                    avia.AddAnimal(new Kapibara(animalName));
+                    break;
+                default:
+                    throw new ArgumentException("Error");
+                    
+            }
+        }
+    }
 
-                Console.WriteLine("Animal type:");
-                string animalType = Console.ReadLine();
+    public void RemoveAnimalWithDelete()
+    {
+        Console.WriteLine("Enter name: ");
+        string nameAnimal = Console.ReadLine();
+        
+        Console.WriteLine("Enter type animal: ");
+        string typeAnimal = Console.ReadLine();
 
-                return animal.name.Equals(animalName, StringComparison.OrdinalIgnoreCase) &&
-                animal.GetType().Name.Equals(animalType, StringComparison.OrdinalIgnoreCase);
-            },
-            "animal");
+        var animal = zoo.ListAnimals.FirstOrDefault(a => a.name == nameAnimal && a.GetType().Name == typeAnimal);
+
+        if (animal != null)
+        {
+            firstAviary.DeleteAnimal(animal);
+            Console.WriteLine("Animal delete");
+        }
+        else
+        {
+            Console.WriteLine("Not found");
+        }
     }
 
     public void EditAnimal()
@@ -293,8 +337,6 @@ class Director
         }
     }
 
-
-
     public void getVisitorStatus()
     {
        Console.WriteLine("Enter number ticket : ");
@@ -311,9 +353,7 @@ class Director
             Console.WriteLine("Error");
         }
     }
-
-
-
+    
     public void getEmployeeStatus()
     {
        Console.WriteLine("Enter personal number employee: ");
@@ -339,45 +379,47 @@ class Director
 
     public void attachAnimal()
     {
-        Console.WriteLine("Enter personal number employee: ");
+        Console.WriteLine("Enter personal number employee. You can see in status employee: ");
         string employeeId = Console.ReadLine();
 
         var employeeToAttach = zoo.ListEmployees.FirstOrDefault(a => a.id == employeeId);
         if (employeeToAttach != null)
         {
-            Console.WriteLine("Enter the name of the animal you want to attach: ");
-            string animalName = Console.ReadLine();
-            Console.WriteLine("Введите тип животного");
-            string animalType = Console.ReadLine();
-            var animal = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
-            if(animal != null && !animal.attached)
+            int aviaryId = int.Parse(Console.ReadLine());
+            var av = zoo.ListAviary.FirstOrDefault(a => a.GetNumberAviary() == aviaryId);
+            if (av != null)
             {
-                employeeToAttach.animalList.Add(animal);
-                animal.changeAttached();
+                Console.WriteLine($"{employeeToAttach.aviaryList.Count}");
+                employeeToAttach.AddAviary(av);
+                av.chagedAttached();
                 Console.WriteLine("The animal is attached");
             }
-            else { Console.WriteLine("The animal has not been found or it has already been assigned to an employee"); }
+            else
+            {
+                Console.WriteLine("The animal was not found");
+            }
         }
-        else { Console.WriteLine("The employee was not found"); }
+        else
+        {
+            Console.WriteLine("The employee was not found");
+        }
     }
     
     public void unpinAnimal()
     {
-        Console.WriteLine("Enter the employee's personal number: ");
+        Console.WriteLine("Enter personal number employee. You can see in status employee: ");
         string employeeId = Console.ReadLine();
 
         var employeeToAttach = zoo.ListEmployees.FirstOrDefault(a => a.id == employeeId);
         if (employeeToAttach != null)
         {
-            Console.WriteLine("Enter the name of the animal you want to attach: ");
-            string animalName = Console.ReadLine();
-            Console.WriteLine("Enter the type of animal");
-            string animalType = Console.ReadLine();
-            var animal = zoo.ListAnimals.FirstOrDefault(a => a.name == animalName && a.GetType().Name == animalType);
-            if (animal != null)
+            Console.WriteLine("Enter the number of the aviary you want to unattach: ");
+            int aviaryId = int.Parse(Console.ReadLine());
+            var av = zoo.ListAviary.FirstOrDefault(a => a.GetNumberAviary() == aviaryId);
+            if (av != null)
             {
-                employeeToAttach.animalList.Remove(animal);
-                animal.changeAttached();
+                employeeToAttach.aviaryList.Remove(av);
+                av.chagedAttached();
                 Console.WriteLine("The animal is detached");
             }
             else { Console.WriteLine("The animal was not found"); }
@@ -385,37 +427,91 @@ class Director
         else { Console.WriteLine("The employee was not found"); }
     }
 
-    public void GenerateFirstPart()
+    public void StartTimer()
+    {
+        animalsStarving.StartTime();
+        Console.WriteLine("Time has started");
+    }
+    
+    public void StopTimer()
+    {
+        animalsStarving.StopTime();
+        Console.WriteLine("Time has stopped");
+    }
+
+    public void GenerateFirstAnimal()
     {
         string[] animalNames = new string[] { "Pingu", "Pippa", "Penguin", "Percy", "Pip", "Capy", "Cara", "Casper", "Camilla",
             "Whiskers", "Mittens", "Simba", "Leo", "Cleo", "Misty", "Felix", "Oliver", "Shadow", "Smokey", "Luna"};
 
-        int counter = 0;
+        int counter = 1;
+        
+        
+        zoo.ListAviary.Add(firstAviary);
+        zoo.ListAviary.Add(secondAviary);
+        zoo.ListAviary.Add(thirdAviary);
+        
+        firstAviary.AddAnimal(new Cat("name"));
 
-        Aviary firstAviary = new Aviary(generator.RandomVal());
-        Aviary secondAviary = new Aviary(generator.RandomVal());
-        Aviary thirdAviary = new Aviary(generator.RandomVal());
-
-        while (counter != 0)
+        while (counter != 20)
         {
-            string generateName = animalNames[generator.RandomTypeAnimal()];
+            string generateName = animalNames[generator.RandomNameNumber()];
             int typeAnimal = generator.RandomTypeAnimal();
-
+        
             if (typeAnimal == 1)
             {
-                firstAviary.AddInAviary(new Cat(generateName, firstAviary.aviaryNumber));
+                firstAviary.AddAnimal(new Cat(generateName));
+                zoo.ListAnimals.Add(new Cat(generateName));
                 counter++;
             }
             else if (typeAnimal == 2)
             {
-                secondAviary.AddInAviary(new Penguin(generateName, secondAviary.aviaryNumber));
+                secondAviary.AddAnimal(new Penguin(generateName));
+                zoo.ListAnimals.Add(new Penguin(generateName));
                 counter++;
             }
             else if (typeAnimal == 3)
             {
-                thirdAviary.AddInAviary(new Kapibara(generateName, thirdAviary.aviaryNumber));
+                thirdAviary.AddAnimal(new Kapibara(generateName));
+                zoo.ListAnimals.Add(new Kapibara(generateName));
                 counter++;
+            }
+            
+        }
+    }
+
+    public void ReturnListAviares()
+    {
+        foreach (var i in zoo.ListAviary)
+        {
+            Console.WriteLine($"{i.GetNumberAviary()}, {i.GetStatusForLists()}");
+        }
+    }
+
+    public void AviaryStatus()
+    {
+        Console.WriteLine("Enter the number aviary. You look in the command show aviaryes");
+        int num = int.Parse(Console.ReadLine());
+
+        foreach (var i in zoo.ListAviary)
+        {
+            if (i.GetNumberAviary() == num)
+            {
+                i.GetStatusForLists();
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Not found");
             }
         }
     }
+
+    public void NewAviary()
+    {
+        int generateNumber = generator.RandovNumberForAviary();
+        zoo.ListAviary.Add(new Aviary(generateNumber, zoo));
+        Console.WriteLine("Add aviary");
+    }
 }
+

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace ConsoleApp1;
 
-class Visitor : Human
+public class Visitor : Human
 {
     public Visitor(string name, Gender gender, string id) : base(name, gender, id)
     {
@@ -35,5 +35,9 @@ class Visitor : Human
             this.gender = Visitor.Gender.Male;
         }
     }
-    
+
+    // public string message()
+    // {
+    //     return $"Name: {this.name} gender: {this.gender}" + $" number ticket: {this.id}, visiters";
+    // }
 }

@@ -4,7 +4,7 @@ class Kapibara : Animal
 {
     protected override int defaultHungerThreshold => 20;
 
-    public Kapibara(string name, int animalNumber) : base(name, animalNumber)
+    public Kapibara(string name) : base(name)
     {
         this.name = name;
     }

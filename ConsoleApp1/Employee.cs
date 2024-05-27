@@ -1,18 +1,15 @@
 namespace ConsoleApp1;
 
-class Employee : Human
+public class Employee : Human
 {
     public string post;
-    public List<Animal> animalList;
-    public List<Aviary> aviaryList;
+    public List<Animal>animalList;
+    public List<IOperationsAviary> aviaryList;
     public Employee(string name, Gender gender,string id, string post) : base(name, gender, id )
     {
-        // this.name = name;
-        // this.gender = gender;
-        // this.id = id;
         this.post = post;
         animalList = new List<Animal>();
-        aviaryList = new List<Aviary>();
+        aviaryList = new List<IOperationsAviary>();
     }
 
     public void AddAnimal(Animal anim)
@@ -24,10 +21,20 @@ class Employee : Human
     {
         animalList.Remove(anim);
     }
+
+    public void AddAviary(IOperationsAviary aviar)
+    {
+        aviaryList.Add(aviar);
+    }
+
+    public void RemoveAviary(Aviary aviar)
+    {
+        aviaryList.Remove(aviar);
+    }
     
     public override void status()
     {
-        Console.WriteLine($"Name:{name}, Gender:{gender}, Post:{post}");
+        Console.WriteLine($"Name:{name}, Gender:{gender}, Post:{post}, Fix aviary: {aviaryList[0]}");
     }
     
     public void changeEmployeeName(string newName)
@@ -48,18 +55,16 @@ class Employee : Human
         }
     }
 
-    public void FeedAnimals(Zoo zoo)
+    public void Recover()
     {
-        foreach (var animal in animalList)
+        foreach (var avairy in aviaryList)
         {
-            if (animal.currentStatus == Animal.hungerStatus.hungry) {
-                animal.feed();
-                animal.updateStatus();
-                Console.WriteLine($"{name} is feeded {animal.name} ({animal.GetType().Name}).");
+            if (avairy.GetFeedContiner() != 1000)
+            {
+                avairy.RecoveryFeedConteiner();
+                Console.WriteLine($"{name} replenished his food supply");
                 break;
             }
         }
     }
-    
-    
 }

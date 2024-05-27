@@ -1,97 +1,88 @@
 namespace ConsoleApp1;
 
-public interface IOperationsWithAviary
+public class Aviary : IOperationsAviary
 {
-    void AddInAviary(Animal animal);
-    void DeleteFromAviary(Animal animal);
-    void GoToOpen(Animal animal);
-    void GoToClose(Animal animal);
-    void AviaryStatus(int aviaryNumber);
-    void FeedAnimal(Animal animal);
-    void RecoveryFeed();
-    void VisitorFeed(Animal animal);
-}
-
-public class Aviary : IOperationsWithAviary
-{
-    public int aviaryNumber;
-    private Randomizer random;
-    public int limitAnimal;
-    public int feedContainer;
+    public int numberAviary;
+    public int limitAnimals;
+    public int feedContiner;
     public bool attached;
     public List<Animal> ListAviary;
-    public IOpen openAviary;
-    public IClose closeAviary;
+    public IOpen openPart;
+    public IClose closePart;
     private Zoo zoo;
+    private Employee employee;
+    private Randomizer random;
     
-
-    public Aviary(int aviaryNumber)
+    public Aviary(int numberAviary, Zoo zoo)
     {
-        this.aviaryNumber = aviaryNumber;
-        limitAnimal = 8;
-        feedContainer = 1000;
+        this.numberAviary = numberAviary;
+        limitAnimals = 8;
+        feedContiner = 1000;
         attached = false;
         ListAviary = new List<Animal>();
-        zoo = zoo;
-        random = random;
-        
+        random = new Randomizer();
+        this.zoo = zoo;
+        openPart = new OpenAviary();
+        closePart = new CloseAviary();
     }
 
-    public void AddInAviary(Animal animal)
+
+    public void generateNum()
+    {
+        numberAviary = random.RandovNumberForAviary();
+    }
+    
+    public void AddAnimal(Animal animal)
     {
         if (ListAviary.Count == 0)
         {
-            int generationNumber = random.RandomPartOfAviary();
+            int generationNumber = random.RandomPartAviary();
             ListAviary.Add(animal);
-            zoo.ListAnimals.Add(animal);
+            
             if (generationNumber == 1)
             {
                 
-                openAviary.AddAnimalInOpenAviary(animal);
+                openPart.AddAnimalInOpenAviary(animal);
             }
             else
             {
-                closeAviary.AddAnimalInCloseAviary(animal);
+                closePart.AddAnimalInCloseAviary(animal);
             }
         }
-        else if (ListAviary[0].GetType().Name == animal.GetType().Name && ListAviary.Count != limitAnimal)
+        else if (ListAviary[0].GetType().Name == animal.GetType().Name && ListAviary.Count != limitAnimals)
         {
-            int generationNumber = random.RandomPartOfAviary();
+            int generationNumber = random.RandomPartAviary();
             ListAviary.Add(animal);
-            zoo.ListAnimals.Add(animal);
+            
             if (generationNumber == 1)
             {
                 
-                openAviary.AddAnimalInOpenAviary(animal);
+                openPart.AddAnimalInOpenAviary(animal);
             }
             else
             {
-                closeAviary.AddAnimalInCloseAviary(animal);
+                closePart.AddAnimalInCloseAviary(animal);
             }
-        }
-        else if (ListAviary.Count == limitAnimal)
-        {
-            Console.WriteLine("Error! Add new aviary");
         }
         else
         {
-            Console.WriteLine("This animal don't add");
+            Console.WriteLine("Error");
         }
     }
 
-    public void DeleteFromAviary(Animal animal)
+    public void DeleteAnimal(Animal animal)
     {
         if (ListAviary.Count != 0)
         {
             ListAviary.Remove(animal);
             zoo.ListAnimals.Remove(animal);
-            if (openAviary.ReturnOpenAviary().Contains(animal))
+            if (openPart.ReturnOpenAviary().Contains(animal))
             {
-                openAviary.DeleteAnimalOpenAviary(animal);
+                openPart.DeleteAnimalOpenAviary(animal);
             }
             else
             {
-                closeAviary.DeleteAnimalCloseAviary(animal);
+                closePart.DeleteAnimalCloseAviary(animal);
             }
         }
         else
@@ -102,10 +93,10 @@ public class Aviary : IOperationsWithAviary
 
     public void GoToClose(Animal animal)
     {
-        if (openAviary.ReturnOpenAviary().Contains(animal))
+        if (openPart.ReturnOpenAviary().Contains(animal))
         {
-            closeAviary.AddAnimalInCloseAviary(animal);
-            openAviary.DeleteAnimalOpenAviary(animal);
+            closePart.AddAnimalInCloseAviary(animal);
+            openPart.DeleteAnimalOpenAviary(animal);
             Console.WriteLine($"{animal.name} has been go to close aviary");
         }
         else
@@ -116,10 +107,10 @@ public class Aviary : IOperationsWithAviary
 
     public void GoToOpen(Animal animal)
     {
-        if (closeAviary.ReturnCloseAviary().Contains(animal))
+        if (closePart.ReturnCloseAviary().Contains(animal))
         {
-            openAviary.AddAnimalInOpenAviary(animal);
-            closeAviary.DeleteAnimalCloseAviary(animal);
+            openPart.AddAnimalInOpenAviary(animal);
+            closePart.DeleteAnimalCloseAviary(animal);
             Console.WriteLine($"{animal.name} has been go to close aviary");
         }
         else
@@ -128,32 +119,56 @@ public class Aviary : IOperationsWithAviary
         }
     }
 
-    public void AviaryStatus(int aviaryNumber)
+    public string GetStatusForLists()
     {
-        Console.WriteLine($"In this aviary there are {ListAviary[0].GetType().Name}s. Current feed container is {feedContainer}");
+        if (ListAviary.Count != 0)
+        {
+            return $"In this aviary there are {ListAviary[0].GetType().Name}s. Current feed container is {feedContiner}";
+        }
+        else
+        {
+            return $"Aviary is empty";
+        }
+    }
+
+    public int GetNumberAviary()
+    {
+        return numberAviary;
+    }
+
+    public bool getAttachedStatus()
+    {
+        return attached;
+    }
+    
+    public void chagedAttached()
+    {
+        attached = true;
+    }
+
+    public List<Animal> ListAviar()
+    {
+        return ListAviary;
     }
 
     public void FeedAnimal(Animal animal)
     {
-        if (animal.currentStatus == Animal.hungerStatus.hungry)
+        if (feedContiner != 0 && (feedContiner - (100 - animal.satiety)) >= 0)
         {
-            feedContainer -= (100 - animal.satiety);
+            feedContiner -= (100 - animal.satiety);
             animal.feed();
             animal.updateStatus();
+            Console.WriteLine($"Animal {animal.name} is feded");
         }
     }
 
-    public void RecoveryFeed()
+    public int GetFeedContiner()
     {
-        feedContainer = 1000;
+        return feedContiner;
     }
 
-    public void VisitorFeed(Animal animal)
+    public void RecoveryFeedConteiner()
     {
-        if (animal.currentStatus == Animal.hungerStatus.hungry)
-        {
-            animal.feed();
-            animal.updateStatus();
-        }
+        feedContiner = 1000;
     }
 }

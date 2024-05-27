@@ -1,5 +1,3 @@
-using System.Net.Sockets;
-
 namespace ConsoleApp1;
 
 public interface IOpen
@@ -13,7 +11,7 @@ public class OpenAviary : IOpen
 {
     public List<Animal> ListOpenAviary;
 
-    public OpenAviary(List<Animal> ListOpenAviary)
+    public OpenAviary()
     {
         ListOpenAviary = new List<Animal>();
     }
