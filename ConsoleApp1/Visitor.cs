@@ -1,43 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-namespace ConsoleApp1;
+using ZooSimulation;
 
-public class Visitor : Human
+class Visitors : Humans
 {
-    public Visitor(string name, Gender gender, string id) : base(name, gender, id)
-    {
-        this.name = name;
-        this.gender = gender;
-        this.id = id;
+    public int money;
+    public Visitors(string name, Gender sex, string id,int money) : base(name, sex, id) {
+        this.money = money;
     }
     public override void status()
     {
-        Console.WriteLine($"Name:{name}, Gender:{gender}");
+        Console.WriteLine($"Имя:{name}, Пол:{sex} Деньги:{money}");
     }
-    
-    public void changeName(string newName)
+    public void giveTreat(IPublicPart openPart,Animals animal)
     {
-        name = newName;
-    }
-
-    public void changeGender(string newGender)
-    {
-        if(Enum.TryParse(newGender,out gender))
-        {
-            this.gender = gender;
-        }
-        else
-        {
-            Console.WriteLine("Error");
-            this.gender = Visitor.Gender.Male;
+        if (money-50 >= 0) {
+            if (openPart.checkAnimal(animal))
+            {
+                
+                if (animal.currentStatus == Animals.hungerStatus.Голодный)
+                {
+                    money -= 50;
+                    animal.feed();
+                    animal.updateStatus();
+                }
+            }
         }
     }
-
-    // public string message()
-    // {
-    //     return $"Name: {this.name} gender: {this.gender}" + $" number ticket: {this.id}, visiters";
-    // }
 }

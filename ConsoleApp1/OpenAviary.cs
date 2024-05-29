@@ -1,33 +1,60 @@
-namespace ConsoleApp1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using ZooSimulation;
 
-public interface IOpen
+interface IPublicPart
 {
-    void AddAnimalInOpenAviary(Animal animal);
-    void DeleteAnimalOpenAviary(Animal animal);
-    List<Animal> ReturnOpenAviary();
+    void getPublicStatus();
+
+    void removeAnimal(Animals animal);
+
+    void addAnimal(Animals animal);
+
+    bool checkAnimal(Animals animal);
+
+    List<Animals> getAnimals();
 }
 
-public class OpenAviary : IOpen
+class PublicPart : IPublicPart
 {
-    public List<Animal> ListOpenAviary;
 
-    public OpenAviary()
+    private List<Animals> publicPartList { get; }
+    
+    public PublicPart()
     {
-        ListOpenAviary = new List<Animal>();
+        publicPartList = new List<Animals>();
     }
 
-    public void AddAnimalInOpenAviary(Animal animal)
+    public void getPublicStatus()
     {
-        ListOpenAviary.Add(animal);
+        Console.WriteLine($"Количество животных в открытой части вольера : {publicPartList.Count}");
+
+        foreach (Animals animal in publicPartList)
+        {
+            animal.status();
+        }
     }
 
-    public void DeleteAnimalOpenAviary(Animal animal)
+    public void addAnimal(Animals animal)
     {
-        ListOpenAviary.Remove(animal);
+        publicPartList.Add(animal);
     }
 
-    public List<Animal> ReturnOpenAviary()
+    public void removeAnimal(Animals animal)
     {
-        return ListOpenAviary;
+        publicPartList.Remove(animal);
+    }
+    public bool checkAnimal(Animals animal)
+    {
+        return publicPartList.Contains(animal) ? true : false;
+    }
+
+    public List<Animals> getAnimals()
+    {
+        return publicPartList;
     }
 }

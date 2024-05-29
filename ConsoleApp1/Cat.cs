@@ -1,16 +1,17 @@
-namespace ConsoleApp1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ZooSimulation;
 
-class Cat : Animal
+class Tiger : Animals
 {
-    protected override int defaultHungerThreshold => 30;
+    protected override int defaultHungerThreshold => 70;
 
-    public Cat(string name) : base(name)
-    {
-        
-    }
-    
+    public Tiger(string name) : base(name) { }
     public override void voiceCommand()
     {
-        Console.WriteLine("Chipi chipi chapa");
+        Console.WriteLine("Раар");
     }
 }

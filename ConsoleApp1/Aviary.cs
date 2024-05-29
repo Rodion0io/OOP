@@ -1,174 +1,254 @@
-namespace ConsoleApp1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleApp1;
 
-public class Aviary : IOperationsAviary
+interface IAviary
 {
-    public int numberAviary;
-    public int limitAnimals;
-    public int feedContiner;
-    public bool attached;
-    public List<Animal> ListAviary;
-    public IOpen openPart;
-    public IClose closePart;
-    private Zoo zoo;
-    private Employee employee;
-    private Randomizer random;
-    
-    public Aviary(int numberAviary, Zoo zoo)
-    {
-        this.numberAviary = numberAviary;
-        limitAnimals = 8;
-        feedContiner = 1000;
-        attached = false;
-        ListAviary = new List<Animal>();
-        random = new Randomizer();
-        this.zoo = zoo;
-        openPart = new OpenAviary();
-        closePart = new CloseAviary();
-    }
+    void addAnimal(Animals newAnimal);
+    void removeAnimal(Animals newAnimal);
 
+    void replenishFirstSupplies();
 
-    public void generateNum()
+    void replenishSecondSupplies();
+
+    void feedAnimal(Animals animal);
+
+    void getStatus();
+
+    bool available(Animals newAnimal);
+
+    int getFirstContainer();
+
+    int getSecondContainer();
+
+    string getAviaryId();
+
+    List<Animals> getAnimals();
+
+    void moveToPublicPart(Animals animal);
+
+    void moveToPrivatePart(Animals animal);
+    
+    IPublicPart getPublicPart();
+
+    IPrivatePart getPrivatePart();
+
+    void feed();
+}
+
+class Aviary: IAviary
+{
+    public string aviaryId;
+    private int maxAnimalAmount;
+
+    public IPublicPart publicPart;
+    public IPrivatePart privatePart;
+
+    public int firstContainer;
+    public int secondContainer;
+    public int firstContainerMaxSize;
+    public int secondContainerMaxSize;
+    public List<Animals> aviaryAnimals;
+    public RandomNumberGenerator randNumber;
+ 
+    public Aviary(string aviaryId)
     {
-        numberAviary = random.RandovNumberForAviary();
+        this.aviaryId = aviaryId;
+        maxAnimalAmount = 5;
+        firstContainer = 0;
+        secondContainer = 0;
+        firstContainerMaxSize = 0;
+        secondContainerMaxSize = 0;
+        aviaryAnimals = new List<Animals>();
+        privatePart = new PrivatePart();
+        publicPart = new PublicPart();
+        randNumber = new RandomNumberGenerator();
     }
     
-    public void AddAnimal(Animal animal)
+    public void moveToPublicPart(Animals animal)
     {
-        if (ListAviary.Count == 0)
+        if (privatePart.checkAnimal(animal))
         {
-            int generationNumber = random.RandomPartAviary();
-            ListAviary.Add(animal);
-            
-            if (generationNumber == 1)
+            privatePart.removeAnimal(animal);
+            publicPart.addAnimal(animal);
+        }
+    }
+
+    public void moveToPrivatePart(Animals animal)
+    {
+        if (publicPart.checkAnimal(animal))
+        {
+            publicPart.removeAnimal(animal);
+            privatePart.addAnimal(animal);
+        }
+    }
+
+    public bool available(Animals newAnimal)
+    {
+        if (aviaryAnimals.Count == 0)
+        {
+            return true;
+        }
+
+        if (aviaryAnimals.Count < maxAnimalAmount)
+        {
+            if (newAnimal.GetType().Name == aviaryAnimals[0].GetType().Name)
             {
-                
-                openPart.AddAnimalInOpenAviary(animal);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addAnimal(Animals newAnimal)
+    {
+        if (available(newAnimal))
+        {
+            aviaryAnimals.Add(newAnimal);
+            privatePart.addAnimal(newAnimal);
+            newAnimal.aviary = this;
+        }
+
+        if (aviaryAnimals.Count == 1)
+        {
+            if (aviaryAnimals[0].GetType().Name == "Monkey")
+            {
+                FirstBrand firstBrand = new FirstBrand();
+                SecondBrand secondBrand = new SecondBrand();
+                firstContainer = firstBrand.weight;
+                secondContainer = secondBrand.weight;
+                firstContainerMaxSize = firstBrand.weight;
+                secondContainerMaxSize = secondBrand.weight;
+            }
+            else if (aviaryAnimals[0].GetType().Name == "Tiger")
+            {
+                FirstBrand firstBrand = new FirstBrand();
+                ThirdBrand thirdBrand = new ThirdBrand();
+                firstContainer = firstBrand.weight;
+                secondContainer = thirdBrand.weight;
+                firstContainerMaxSize = firstBrand.weight;
+                secondContainerMaxSize = thirdBrand.weight;
             }
             else
             {
-                closePart.AddAnimalInCloseAviary(animal);
+                SecondBrand secondBrand = new SecondBrand();
+                ThirdBrand thirdBrand = new ThirdBrand();
+                firstContainer = secondBrand.weight;
+                secondContainer = thirdBrand.weight;
+                firstContainerMaxSize = secondBrand.weight;
+                secondContainerMaxSize = thirdBrand.weight;
             }
         }
-        else if (ListAviary[0].GetType().Name == animal.GetType().Name && ListAviary.Count != limitAnimals)
+    }
+
+    public void removeAnimal(Animals newAnimal)
+    {
+        aviaryAnimals.Remove(newAnimal);
+        if (aviaryAnimals.Count == 0)
         {
-            int generationNumber = random.RandomPartAviary();
-            ListAviary.Add(animal);
-            
-            if (generationNumber == 1)
-            {
-                
-                openPart.AddAnimalInOpenAviary(animal);
+            firstContainer = 0;
+            secondContainer = 0;
+        }
+    }
+
+    public void replenishFirstSupplies()
+    {
+        firstContainer = firstContainerMaxSize;
+    }
+
+    public void replenishSecondSupplies()
+    {
+        secondContainer = secondContainerMaxSize;
+    }
+
+    public void feedAnimal(Animals animal)
+    {
+        int number = randNumber.GenerateRandomValueToFoodContainer();
+        
+        if (number == 1)
+        {
+            if (firstContainer != 0) {
+
+                if (firstContainer - (100 - animal.saturation) >= 0)
+                {
+                    firstContainer -= (100 - animal.saturation);
+                    animal.feed();
+                    animal.updateStatus();
+                }
+
+                else
+                {
+                    animal.saturation += firstContainer;
+                    animal.updateStatus();
+                    firstContainer = 0;
+                }
             }
-            else
-            {
-                closePart.AddAnimalInCloseAviary(animal);
+        }
+
+        else
+        {
+            if (secondContainer != 0) {
+
+                if (secondContainer - (100 - animal.saturation) >= 0)
+                {
+                    secondContainer -= (100 - animal.saturation);
+                    animal.feed();
+                    animal.updateStatus();
+                }
+
+                else
+                {
+                    animal.saturation += secondContainer;
+                    animal.updateStatus();
+                    secondContainer = 0;
+                }
             }
         }
-        else
-        {
-            Console.WriteLine("Error");
-        }
+        
     }
 
-    public void DeleteAnimal(Animal animal)
+    public void getStatus()
     {
-        if (ListAviary.Count != 0)
-        {
-            ListAviary.Remove(animal);
-            zoo.ListAnimals.Remove(animal);
-            if (openPart.ReturnOpenAviary().Contains(animal))
-            {
-                openPart.DeleteAnimalOpenAviary(animal);
-            }
-            else
-            {
-                closePart.DeleteAnimalCloseAviary(animal);
-            }
-        }
-        else
-        {
-            Console.WriteLine("Aviary is empty");
-        }
+        Console.WriteLine($"Количество животных:{aviaryAnimals.Count}");
+
+        privatePart.getPrivateStatus();
+
+        publicPart.getPublicStatus();
+
+        Console.WriteLine($"Текущий запас первого контейнера:{firstContainer}\n" +
+                          $"второго контенера:{secondContainer}");
     }
 
-    public void GoToClose(Animal animal)
+    public int getFirstContainer()
     {
-        if (openPart.ReturnOpenAviary().Contains(animal))
-        {
-            closePart.AddAnimalInCloseAviary(animal);
-            openPart.DeleteAnimalOpenAviary(animal);
-            Console.WriteLine($"{animal.name} has been go to close aviary");
-        }
-        else
-        {
-            Console.WriteLine("Animal not found");
-        }
+        return firstContainer;
     }
 
-    public void GoToOpen(Animal animal)
+    public int getSecondContainer()
     {
-        if (closePart.ReturnCloseAviary().Contains(animal))
-        {
-            openPart.AddAnimalInOpenAviary(animal);
-            closePart.DeleteAnimalCloseAviary(animal);
-            Console.WriteLine($"{animal.name} has been go to close aviary");
-        }
-        else
-        {
-            Console.WriteLine("Animal not found");
-        }
+        return secondContainer;
     }
 
-    public string GetStatusForLists()
+    public string getAviaryId()
     {
-        if (ListAviary.Count != 0)
-        {
-            return $"In this aviary there are {ListAviary[0].GetType().Name}s. Current feed container is {feedContiner}";
-        }
-        else
-        {
-            return $"Aviary is empty";
-        }
+        return aviaryId;
     }
 
-    public int GetNumberAviary()
+    public List<Animals> getAnimals()
     {
-        return numberAviary;
+        return aviaryAnimals;
     }
 
-    public bool getAttachedStatus()
-    {
-        return attached;
-    }
-    
-    public void chagedAttached()
-    {
-        attached = true;
-    }
+   public IPublicPart getPublicPart()
+   {
+        return publicPart;
+   }
 
-    public List<Animal> ListAviar()
+    public IPrivatePart getPrivatePart()
     {
-        return ListAviary;
-    }
-
-    public void FeedAnimal(Animal animal)
-    {
-        if (feedContiner != 0 && (feedContiner - (100 - animal.satiety)) >= 0)
-        {
-            feedContiner -= (100 - animal.satiety);
-            animal.feed();
-            animal.updateStatus();
-            Console.WriteLine($"Animal {animal.name} is feded");
-        }
-    }
-
-    public int GetFeedContiner()
-    {
-        return feedContiner;
-    }
-
-    public void RecoveryFeedConteiner()
-    {
-        feedContiner = 1000;
+        return privatePart;
     }
 }

@@ -1,70 +1,42 @@
-namespace ConsoleApp1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ZooSimulation;
 
-public class Employee : Human
+class Employee : Humans
 {
     public string post;
-    public List<Animal>animalList;
-    public List<IOperationsAviary> aviaryList;
-    public Employee(string name, Gender gender,string id, string post) : base(name, gender, id )
+    public List<IAviary>aviaryList;
+    public Employee(string name, Gender sex,string id, string post) : base(name, sex, id )
     {
         this.post = post;
-        animalList = new List<Animal>();
-        aviaryList = new List<IOperationsAviary>();
+        aviaryList = new List<IAviary>();
     }
-
-    public void AddAnimal(Animal anim)
-    {
-        animalList.Add(anim);
-    }
-
-    public void RemoveAnimal(Animal anim)
-    {
-        animalList.Remove(anim);
-    }
-
-    public void AddAviary(IOperationsAviary aviar)
-    {
-        aviaryList.Add(aviar);
-    }
-
-    public void RemoveAviary(Aviary aviar)
-    {
-        aviaryList.Remove(aviar);
-    }
-    
     public override void status()
     {
-        Console.WriteLine($"Name:{name}, Gender:{gender}, Post:{post}, Fix aviary: {aviaryList[0]}");
-    }
-    
-    public void changeEmployeeName(string newName)
-    {
-        name = newName;
+        Console.WriteLine($"Имя:{name}, Пол:{sex}, Должность:{post}");
     }
 
-    public void changeEmployeeGender(string newGender)
+    public void feedAviarys(Zoo zoo)
     {
-        if(Enum.TryParse(newGender,out gender))
+        foreach (var aviary in aviaryList)
         {
-            this.gender = gender;
-        }
-        else
-        {
-            Console.WriteLine("Error");
-            this.gender = Visitor.Gender.Male;
-        }
-    }
+            if (aviary.getFirstContainer() == 0) {
+                aviary.replenishFirstSupplies();
+                Console.WriteLine($"\n{name} возобновил(а) запасы в первом контейнере {aviary.getAviaryId()}.");
+                break;
+            }
 
-    public void Recover()
-    {
-        foreach (var avairy in aviaryList)
-        {
-            if (avairy.GetFeedContiner() != 1000)
+            if (aviary.getSecondContainer() == 0)
             {
-                avairy.RecoveryFeedConteiner();
-                Console.WriteLine($"{name} replenished his food supply");
+                aviary.replenishSecondSupplies();
+                Console.WriteLine($"\n{name} возобновил(а) запасы во втором контейнере {aviary.getAviaryId()}.");
                 break;
             }
         }
     }
+
+
 }

@@ -1,12 +1,16 @@
-namespace ConsoleApp1;
-
-class Penguin : Animal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ZooSimulation;
+class Bear : Animals
 {
-    protected override int defaultHungerThreshold => 40;
+    protected override int defaultHungerThreshold => 65;
 
-    public Penguin(string name) : base(name) { }
+    public Bear(string name) : base(name) { }
     public override void voiceCommand()
     {
-        Console.WriteLine("Kawasakiiii");
+        Console.WriteLine("Мхмр");
     }
 }

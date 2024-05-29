@@ -1,33 +1,59 @@
 namespace ConsoleApp1;
 
-public interface IClose
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ZooSimulation;
+interface IPrivatePart
 {
-    void AddAnimalInCloseAviary(Animal animal);
-    void DeleteAnimalCloseAviary(Animal animal);
-    List<Animal> ReturnCloseAviary();
+    void addAnimal(Animals animal);
+
+    void removeAnimal(Animals animal);
+    void getPrivateStatus();
+
+    bool checkAnimal(Animals animal);
+
+    List<Animals> getAllAnimals();
 }
 
-public class CloseAviary : IClose
+class PrivatePart:IPrivatePart
 {
-    public List<Animal> ListCloseAviary;
+    private List<Animals> privatePartList;
 
-    public CloseAviary()
+    public PrivatePart()
     {
-        ListCloseAviary = new List<Animal>();
+        privatePartList = new List<Animals>();
     }
 
-    public void AddAnimalInCloseAviary(Animal animal)
+    public void getPrivateStatus()
     {
-        ListCloseAviary.Add(animal);
+        Console.WriteLine($"Количество животных в закрытой части вольера : {privatePartList.Count}");
+        foreach (Animals animal in privatePartList)
+        {
+            animal.status();
+        }
     }
 
-    public void DeleteAnimalCloseAviary(Animal animal)
+    public void removeAnimal(Animals animal)
     {
-        ListCloseAviary.Remove(animal);
+        privatePartList.Remove( animal );
     }
 
-    public List<Animal> ReturnCloseAviary()
+    public void addAnimal(Animals animal)
     {
-        return ListCloseAviary;
+        privatePartList.Add( animal );
     }
+
+    public bool checkAnimal(Animals animal)
+    {
+        return privatePartList.Contains( animal )?true:false;
+    }
+
+    public List<Animals>getAllAnimals()
+    {
+        return privatePartList;
+    }
+
 }

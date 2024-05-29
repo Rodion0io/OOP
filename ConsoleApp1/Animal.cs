@@ -1,47 +1,47 @@
-namespace ConsoleApp1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using  ZooSimulation;
 
-public abstract partial class Animal
+abstract class Animals
 {
-    public int satiety;
+    public int saturation;
     public int hungerThreshold;
     public string name;
-    public bool attached;
-    public IOperationsAviary avair;
+    public IAviary aviary;
     public enum hungerStatus
     {
-        wellFed,
-        hungry
+        Сытый,
+        Голодный
     }
 
     public hungerStatus currentStatus;
 
     protected abstract int defaultHungerThreshold { get; }
-    public Animal(string name)
+    public Animals(string name)
     {
-        currentStatus = hungerStatus.wellFed;
-        satiety = 100;
+        currentStatus = hungerStatus.Сытый;
+        saturation = 100;
         this.name = name;
         hungerThreshold = defaultHungerThreshold;
-        attached = false;
     }
     public abstract void voiceCommand();
     public void feed()
     {
-        satiety = 100;
+        saturation = 100;
     }
 
     public void updateStatus()
     {
-        currentStatus = (satiety > hungerThreshold ? hungerStatus.wellFed : hungerStatus.hungry);
+        currentStatus = (saturation > hungerThreshold ? hungerStatus.Сытый : hungerStatus.Голодный);
     }
+    
     public void status()
     {
-        Console.WriteLine($"Name : {name} current satiety : {satiety}");
-        Console.WriteLine($"Name : {name} current satiety : {currentStatus}");
+        Console.WriteLine($"Вид :{GetType().Name}  Имя : {name} Сытость : {saturation}  Статус : {currentStatus}  Номер вольера:{aviary.getAviaryId()}");
     }
 
-    public void changeAttached()
-    {
-        attached = true;
-    }
+
 }

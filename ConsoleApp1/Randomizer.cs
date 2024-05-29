@@ -1,33 +1,20 @@
-namespace ConsoleApp1;
-
-class Randomizer
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ZooSimulation;
+class RandomNumberGenerator
 {
     private Random rnd = new Random();
 
-    public int RandomValue(int minValue, int maxValue)
+    public int GenerateRandomNumber(int minValue, int maxValue)
     {
         return rnd.Next(minValue, maxValue);
     }
 
-    public int RandomPartAviary()
+    public int GenerateRandomValueToFoodContainer()
     {
-        return rnd.Next(0, 1);
+        return rnd.Next(0, 2);
     }
-
-    public int RandovNumberForAviary()
-    {
-        return rnd.Next(0, 100);
-    }
-
-    public int RandomNameNumber()
-    {
-        return rnd.Next(1, 20);
-    }
-
-    public int RandomTypeAnimal()
-    {
-        return rnd.Next(1, 4);
-    }
-    
-    
 }

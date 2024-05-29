@@ -1,140 +1,138 @@
 using System;
 using System.Collections.Generic;
 using System.Timers;
-using ConsoleApp1;
 
 
 namespace ZooSimulation
 {
-    internal class Maine
+    internal class Menu
     {
         static void Main(string[] args)
         {
-            Randomizer generator = new Randomizer();
+            RandomNumberGenerator generator = new RandomNumberGenerator();
             Zoo zoo = new Zoo();
-            Director direct = new Director(zoo, generator);
-            
-            direct.GenerateFirstAnimal();
-
+            Timer timer = new Timer(zoo);
+            Director user = new Director(zoo,generator,timer);
+       
             while (true)
             {
-                Console.WriteLine("\nChoose action:");
-                Console.WriteLine("1. Display a list of animals");
-                Console.WriteLine("2. Display a list of employee");
-                Console.WriteLine("3. Display a list of visitor");
-                Console.WriteLine("4. Add animal");
-                Console.WriteLine("5. Redact animal");
-                Console.WriteLine("6. Delete animal");
-                Console.WriteLine("7. Add employee");
-                Console.WriteLine("8. Redact employee");
-                Console.WriteLine("9. Delete employee");
-                Console.WriteLine("10. Add visiter");
-                Console.WriteLine("11. Redact visiter");
-                Console.WriteLine("12. Delete visiter");
-                Console.WriteLine("13. Voice");
-                Console.WriteLine("14. Animal status");
-                Console.WriteLine("15. Employee status");
-                Console.WriteLine("16. Visiter status");
-                Console.WriteLine("17. Zoo status");
-                Console.WriteLine("18. Fix aviary to employee");
-                Console.WriteLine("19. Unpin animal");
-                Console.WriteLine("20. Start timer");
-                Console.WriteLine("21. Stop timer");
-                Console.WriteLine("22. Show aviaryes");
-                Console.WriteLine("23. Aviary status");
-                Console.WriteLine("24. New aviary");
-                Console.WriteLine("25. Add animal in aviary");
-                Console.WriteLine("26. exit\n");
-
-                Console.Write("Enter action: ");
+                Console.WriteLine("\nВыберите действие:");
+                Console.WriteLine("1. Отобразить список животных");
+                Console.WriteLine("2. Отобразить список сотрудников");
+                Console.WriteLine("3. Отобразить список посетителей");
+                Console.WriteLine("4. Добавить животное");
+                Console.WriteLine("5. Редактировать животное");
+                Console.WriteLine("6. Удалить животное");
+                Console.WriteLine("7. Добавить Сотрудника");
+                Console.WriteLine("8. Редактировать Сотрудника");
+                Console.WriteLine("9. Удалить Сотрудника");
+                Console.WriteLine("10. Добавить Посетителя");
+                Console.WriteLine("11. Редактировать Посетителя");
+                Console.WriteLine("12. Удалить Посетителя");
+                Console.WriteLine("13. Команда голос");
+                Console.WriteLine("14. Узнать статус животного");
+                Console.WriteLine("15. Узнать статус сотрудника");
+                Console.WriteLine("16. Узнать статус посетителя");
+                Console.WriteLine("17. Узнать статус зоопарка");
+                Console.WriteLine("18. Прикрепить сотрудника к вольеру");
+                Console.WriteLine("19. Открепить сотрудника");
+                Console.WriteLine("20. Пауза");
+                Console.WriteLine("21. Снять паузу");
+                Console.WriteLine("22. Добавить вольер");
+                Console.WriteLine("23. Удалить вольер");
+                Console.WriteLine("24. Узнать статус вольера");
+                Console.WriteLine("25. Узнать список вольеров");
+                Console.WriteLine("26. Переселить животное");
+                Console.WriteLine("27. Выйти из меню");
+                Console.Write("Введите номер действия: ");
                 string input = Console.ReadLine();
 
                 switch (input)
                 {
                     case "1":
-                        direct.DisplayEntities(zoo.ListAnimals,animal=>$"Name: {animal.name} Type: {animal.GetType().Name}","animal");
+                        user.displayAnimals();
                         break;
 
                     case "2":
-                        direct.DisplayEntities(zoo.ListEmployees, employee => $"Name: {employee.name} Gender: {employee.gender}" +
-                        $" Personal number: {employee.id} post: {employee.post}" +
-                        $" fix aviary: {employee.aviaryList}", "employees");
+                        user.displayEmployees();
                         break;
 
                     case "3":
-                        direct.DisplayEntities(zoo.ListVisitors, visitor => $"Name: {visitor.name} gender: {visitor.gender}" +
-                                                                        $" number ticket: {visitor.id}", "visiters");
+                        user.displayVisitors();
                         break;
                     case "4":
-                        direct.AddAnimal();
+                        user.AddAnimal();
                         break;
                     case "5":
-                        direct.EditAnimal();
+                        user.EditAnimal();
                         break;
                     case "6":
-                        direct.RemoveAnimalWithDelete();
+                        user.RemoveAnimal();
                         break;
                     case "7":
-                        direct.AddEmployee();
+                        user.AddEmployee();
                         break;
                     case "8":
-                        direct.EditEmployee();
+                        user.EditEmployee();
                         break;
                     case "9":
-                        direct.RemoveEmployee();
+                        user.RemoveEmployee();
                         break;
                     case "10":
-                        direct.AddVisitor();
+                        user.AddVisitor();
                         break;
                     case "11":
-                        direct.EditVisitor();
+                        user.EditVisitor();
                         break;
                     case "12":
-                        direct.RemoveVisitor();
+                        user.RemoveVisitor();
                         break;
                     case "13":
-                        direct.Voice();
+                        user.Order();
                         break;
                     case "14":
-                        direct.getAnimalStatus();
+                        user.getAnimalStatus();
                         break;
                     case "15":
-                        direct.getEmployeeStatus();
+                        user.getEmployeeStatus();
                         break;
                     case "16":
-                        direct.getVisitorStatus();
+                        user.getVisitorStatus();
                         break;
                     case "17":
-                        direct.getZooStatus();
+                        user.getZooStatus();
                         break;
                     case "18":
-                        direct.attachAnimal();
+                        user.attachAviaryToEmployee();
                         break;
                     case "19":
-                        direct.unpinAnimal();
+                        user.unpinAviary();
                         break;
                     case "20":
-                        direct.StartTimer();
+                        user.onPause();
                         break;
                     case "21":
-                        direct.StopTimer();
+                        user.unPause();
                         break;
                     case "22":
-                        direct.ReturnListAviares();
+                        user.AddAviary();
                         break;
                     case "23":
-                        direct.AviaryStatus();
+                        user.RemoveAviary();
                         break;
                     case "24":
-                        direct.NewAviary();
+                        user.getAviaryStatus();
                         break;
                     case "25":
-                        direct.AddAnimalInAviary();
+                        user.displayAviarys();
                         break;
                     case "26":
+                        user.resettleAnimal();
+                        break;
+                    case "27":
                         return;
                     default:
-                        Console.WriteLine("Error");
+                        Console.WriteLine("Некорректный ввод. Пожалуйста, введите число от 1 до 27.");
                         break;
                 }
             }
