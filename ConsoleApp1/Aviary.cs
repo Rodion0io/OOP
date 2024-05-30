@@ -12,8 +12,6 @@ interface IAviary
 
     void replenishFirstSupplies();
 
-    void replenishSecondSupplies();
-
     void feedAnimal(Animals animal);
 
     void getStatus();
@@ -36,7 +34,9 @@ interface IAviary
 
     IPrivatePart getPrivatePart();
 
-    void feed();
+    void addFood<T>(T firstBrand, int container) where T : Food;
+
+    void feedEntity<T>(T entity, int container) where T : Animals;
 }
 
 class Aviary: IAviary
@@ -49,10 +49,9 @@ class Aviary: IAviary
 
     public int firstContainer;
     public int secondContainer;
-    public int firstContainerMaxSize;
-    public int secondContainerMaxSize;
     public List<Animals> aviaryAnimals;
     public RandomNumberGenerator randNumber;
+    public List<Food> foodList;
  
     public Aviary(string aviaryId)
     {
@@ -60,14 +59,13 @@ class Aviary: IAviary
         maxAnimalAmount = 5;
         firstContainer = 0;
         secondContainer = 0;
-        firstContainerMaxSize = 0;
-        secondContainerMaxSize = 0;
         aviaryAnimals = new List<Animals>();
         privatePart = new PrivatePart();
         publicPart = new PublicPart();
         randNumber = new RandomNumberGenerator();
+        foodList = new List<Food>();
     }
-    
+
     public void moveToPublicPart(Animals animal)
     {
         if (privatePart.checkAnimal(animal))
@@ -120,8 +118,8 @@ class Aviary: IAviary
                 SecondBrand secondBrand = new SecondBrand();
                 firstContainer = firstBrand.weight;
                 secondContainer = secondBrand.weight;
-                firstContainerMaxSize = firstBrand.weight;
-                secondContainerMaxSize = secondBrand.weight;
+                foodList.Add(firstBrand);
+                foodList.Add(secondBrand);
             }
             else if (aviaryAnimals[0].GetType().Name == "Tiger")
             {
@@ -129,8 +127,8 @@ class Aviary: IAviary
                 ThirdBrand thirdBrand = new ThirdBrand();
                 firstContainer = firstBrand.weight;
                 secondContainer = thirdBrand.weight;
-                firstContainerMaxSize = firstBrand.weight;
-                secondContainerMaxSize = thirdBrand.weight;
+                foodList.Add(firstBrand);
+                foodList.Add(thirdBrand);
             }
             else
             {
@@ -138,8 +136,8 @@ class Aviary: IAviary
                 ThirdBrand thirdBrand = new ThirdBrand();
                 firstContainer = secondBrand.weight;
                 secondContainer = thirdBrand.weight;
-                firstContainerMaxSize = secondBrand.weight;
-                secondContainerMaxSize = thirdBrand.weight;
+                foodList.Add(secondBrand);
+                foodList.Add(thirdBrand);
             }
         }
     }
@@ -154,60 +152,54 @@ class Aviary: IAviary
         }
     }
 
-    public void replenishFirstSupplies()
+    public void addFood<T>(T food, int container) where T : Food
     {
-        firstContainer = firstContainerMaxSize;
+        container = food.weight;
     }
 
-    public void replenishSecondSupplies()
+    public void replenishFirstSupplies()
     {
-        secondContainer = secondContainerMaxSize;
+        if (firstContainer == 0)
+        {
+            addFood(foodList[0], firstContainer);
+        }
+        else if (secondContainer == 0)
+        {
+            addFood(foodList[1], secondContainer);
+        }
+    }
+
+    public void feedEntity<T>(T entity, int container) where T : Animals
+    {
+        if (container != 0)
+        {
+            if (container - (100 - entity.saturation) >= 0)
+            {
+                container -= (100 - entity.saturation);
+                entity.feed();
+                entity.updateStatus();
+            }
+            else
+            {
+                entity.saturation += container;
+                entity.updateStatus();
+                container = 0;
+            }
+        }
     }
 
     public void feedAnimal(Animals animal)
     {
         int number = randNumber.GenerateRandomValueToFoodContainer();
-        
-        if (number == 1)
+
+        if (number == 0)
         {
-            if (firstContainer != 0) {
-
-                if (firstContainer - (100 - animal.saturation) >= 0)
-                {
-                    firstContainer -= (100 - animal.saturation);
-                    animal.feed();
-                    animal.updateStatus();
-                }
-
-                else
-                {
-                    animal.saturation += firstContainer;
-                    animal.updateStatus();
-                    firstContainer = 0;
-                }
-            }
+            feedEntity(animal, firstContainer);
         }
-
         else
         {
-            if (secondContainer != 0) {
-
-                if (secondContainer - (100 - animal.saturation) >= 0)
-                {
-                    secondContainer -= (100 - animal.saturation);
-                    animal.feed();
-                    animal.updateStatus();
-                }
-
-                else
-                {
-                    animal.saturation += secondContainer;
-                    animal.updateStatus();
-                    secondContainer = 0;
-                }
-            }
+            feedEntity(animal, secondContainer);
         }
-        
     }
 
     public void getStatus()

@@ -23,16 +23,9 @@ class Employee : Humans
     {
         foreach (var aviary in aviaryList)
         {
-            if (aviary.getFirstContainer() == 0) {
+            if (aviary.getFirstContainer() == 0 || aviary.getSecondContainer() == 0) {
                 aviary.replenishFirstSupplies();
                 Console.WriteLine($"\n{name} возобновил(а) запасы в первом контейнере {aviary.getAviaryId()}.");
-                break;
-            }
-
-            if (aviary.getSecondContainer() == 0)
-            {
-                aviary.replenishSecondSupplies();
-                Console.WriteLine($"\n{name} возобновил(а) запасы во втором контейнере {aviary.getAviaryId()}.");
                 break;
             }
         }
