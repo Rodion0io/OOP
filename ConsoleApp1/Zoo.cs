@@ -4,34 +4,37 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1;
 using ZooSimulation;
 
 class Zoo
 {
-    private List<Animals> Animals;
-    private List<Employee> Employees;
-    private List<Visitors> Visitors;
-    private List<IAviary> Aviarys;
+    public List<Entity> Registry;
+    // private List<Animals> Animals;
+    // private List<Employee> Employees;
+    // private List<Visitors> Visitors;
+    // private List<IAviary> Aviarys;
     private RandomNumberGenerator generator;
     private int Id;
     public Zoo()
     {
-        Animals = new List<Animals>();
-        Employees = new List<Employee>();
-        Visitors = new List<Visitors>();
-        Aviarys = new List<IAviary>();
+        // Animals = new List<Animals>();
+        // Employees = new List<Employee>();
+        // Visitors = new List<Visitors>();
+        // Aviarys = new List<IAviary>();
         generator = new RandomNumberGenerator();
+        Registry = new List<Entity>();
         createZoo();
-        Id = 1;
     }
 
     private void createZoo()
     {
         Random random = new Random();
-        Aviary newAviary = new Aviary((Aviarys.Count() + generator.GenerateRandomNumber(1, 50)).ToString());
-        Aviarys.Add(newAviary);
+        Aviary newAviary = new Aviary();
+        // Aviarys.Add(newAviary);
+        Registry.Add(newAviary);
 
-        List<string> types = new List<string> { "Monkey","Tiger","Bear" };
+        List<string> types = new List<string> { "Monkey","Cat","Bear" };
         List<string> animalNames = new List<string>
         {
             "Max", "Charlie", "Buddy", "Daisy", "Molly",
@@ -61,9 +64,9 @@ class Zoo
                 animal = new Monkey(animalName);
             }
 
-            if (animalType == "Tiger")
+            if (animalType == "Cat")
             {
-                animal = new Tiger(animalName);
+                animal = new Cat(animalName);
             }
 
             if (animalType == "Bear")
@@ -78,23 +81,23 @@ class Zoo
 
     }
 
-    private void attachAnimalToAviary(Animals animal, string aviaryId)
+    private void attachAnimalToAviary(Animals animal, Guid aviaryId)
     {
         foreach (var aviary in Aviarys)
         {
             if (aviary.available(animal))
             {
                 aviary.addAnimal(animal);
-                Animals.Add(animal);
+                Registry.Add(animal);
                 break;
             }
         }
 
         if (animal.aviary == null)
         {
-            IAviary aviaryForNew = new Aviary(aviaryId);
-            Aviarys.Add(aviaryForNew);
-            Animals.Add(animal);
+            IAviary aviaryForNew = new Aviary();
+            Registry.Add(aviaryForNew);
+            Registry.Add(animal);
             aviaryForNew.addAnimal(animal);
         }
 
@@ -105,27 +108,27 @@ class Zoo
         Console.WriteLine("Кличка животного:");
         string animalName = Console.ReadLine();
 
-        Console.WriteLine("Вид животного (Monkey/Tiger/Bear):");
+        Console.WriteLine("Вид животного (Monkey/Cat/Bear):");
         string animalType = Console.ReadLine();
         Animals newAnimal;
         switch (animalType.ToLower())
         {
             case "monkey":
                 newAnimal = new Monkey(animalName);
-                Animals.Add(newAnimal);
+                Registry.Add(newAnimal);
                 attachAnimalToAviary(newAnimal,(Aviarys.Count() +
                 generator.GenerateRandomNumber(1, 50)).ToString());
 
                 break;
-            case "tiger":
-                newAnimal = new Tiger(animalName);
-                Animals.Add(newAnimal);
+            case "cat":
+                newAnimal = new Cat(animalName);
+                Registry.Add(newAnimal);
                 attachAnimalToAviary(newAnimal, (Aviarys.Count() +
                generator.GenerateRandomNumber(1, 50)).ToString());
                 break;
             case "bear":
                 newAnimal = new Bear(animalName);
-                Animals.Add(newAnimal);
+                Registry.Add(newAnimal);
                 attachAnimalToAviary(newAnimal,(Aviarys.Count() +
                generator.GenerateRandomNumber(1, 50)).ToString());
                 break;
@@ -141,11 +144,11 @@ class Zoo
         Console.WriteLine("Вид животного:");
         string animalType = Console.ReadLine();
 
-        foreach (Animals animals in Animals)
+        foreach (Animals animals in Registry)
         {
             if (animalName == animals.name && animalType == animals.GetType().Name)
             {
-                Animals.Remove(animals);
+                Registry.Remove(animals);
                 return;
             }
         }
@@ -156,38 +159,37 @@ class Zoo
     {
         IAviary aviary;
         Console.WriteLine("Введите номер вольера:");
-        string aviaryNum = Console.ReadLine();
+        Guid aviaryNum = Guid.Parse(Console.ReadLine());
 
-        foreach (Aviary aviarys in Aviarys)
+        foreach (Aviary aviarys in Registry)
         {
-            if (aviaryNum == aviarys.aviaryId)
+            if (aviaryNum == aviarys.getAviaryId())
             {
                 Console.WriteLine("Вольер с таким номером уже существует");
                 return;
             }
         }
-        aviary = new Aviary(aviaryNum);
+        aviary = new Aviary();
 
     }
 
     public void RemoveAviary()
     {
-
         IAviary aviary;
         Console.WriteLine("Введите номер вольера : ");
-        string aviaryNum = Console.ReadLine();
+        Guid aviaryNum = Guid.Parse(Console.ReadLine());
         List<Animals> animalsToDelete = new List<Animals>();
-        foreach (IAviary aviarys in Aviarys)
+        foreach (IAviary aviarys in Registry)
         {
             if (aviarys.getAviaryId() == aviaryNum)
             {
                 animalsToDelete = aviarys.getAnimals();
-                Aviarys.Remove(aviarys);
+                Registry.Remove(aviarys);
 
                 for (int i = 0; i < animalsToDelete.Count; i++)
                 {
 
-                    Animals.RemoveAll(a => a == animalsToDelete[i]);
+                    Registry.RemoveAll(a => a == animalsToDelete[i]);
                 }
 
                 break;
@@ -210,26 +212,26 @@ class Zoo
         if (Enum.TryParse(employeeSex, out sex))
         {
             employee = new Employee(employeeName, sex, generator.GenerateRandomNumber(1, 100).ToString(), employeePosition);
-            Employees.Add(employee);
+            Registry.Add(employee);
         }
         else
         {
             Console.WriteLine("Неверное значение пола, установлено значение по умолчанию");
             employee = new Employee(employeeName, Employee.Gender.Male, generator.GenerateRandomNumber(1, 100).ToString(), employeePosition);
-            Employees.Add(employee);
+            Registry.Add(employee);
         }
     }
 
     public void RemoveEmployee()
     {
         Console.WriteLine("Введите персональный номер сотрудника : ");
-        string employeeId = Console.ReadLine();
+        Guid employeeId = Guid.Parse(Console.ReadLine());
 
-        foreach (Employee employees in Employees)
+        foreach (Employee employees in Registry)
         {
             if (employees.id == employeeId)
             {
-                Employees.Remove(employees);
+                Registry.Remove(employees);
                 return;
             }
         }
@@ -251,7 +253,7 @@ class Zoo
         {
             visitor = new Visitors(visitorName, sex, (Visitors.Count() +
                 generator.GenerateRandomNumber(1, 100)).ToString(), int.Parse(visitorMoney));
-            Visitors.Add(visitor);
+            Registry.Add(visitor);
         }
         else
         {
@@ -264,12 +266,12 @@ class Zoo
     public void RemoveVisitor()
     {
         Console.WriteLine("Введите номер билета : ");
-        string visitorId = Console.ReadLine();
-        foreach (Visitors visitors in Visitors)
+        Guid visitorId = Guid.Parse(Console.ReadLine());
+        foreach (Visitors visitors in Registry)
         {
             if (visitors.id == visitorId)
             {
-                Visitors.Remove(visitors);
+                Registry.Remove(visitors);
                 return;
             }
         }
@@ -277,29 +279,17 @@ class Zoo
     }
     public void status()
     {
-        Console.WriteLine($"Количество сотрудников:{Employees.Count()}");
-        Console.WriteLine($"Количество посетителей:{Visitors.Count()}");
-        Console.WriteLine($"Количество животных:{Animals.Count()}");
-        Console.WriteLine($"Количество вольеров:{Aviarys.Count()}");
+        Console.WriteLine($"Количество сотрудников:{Registry.Count()}");
+        Console.WriteLine($"Количество посетителей:{Registry.Count()}");
+        Console.WriteLine($"Количество животных:{Registry.Count()}");// Здесь будет метод с linq
+        Console.WriteLine($"Количество вольеров:{Registry.Count()}");
     }
+    
 
-    public List<Visitors> getVisitors()
-    {
-        return Visitors;
-    }
-
-    public List<Animals> getAnimals()
-    {
-        return Animals;
-    }
-
-    public List<Employee> getEmployee()
-    {
-        return Employees;
-    }
-
-    public List<IAviary>getAviarys()
-    {
-        return Aviarys;
-    }
+    // public int countObject()
+    // {
+    //     List<Object> objects = new List<object>();
+    //
+    //     return objects.OfType<T>().Count();
+    // }
 }

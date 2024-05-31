@@ -9,7 +9,7 @@ using ZooSimulation;
 class Visitors : Humans
 {
     public int money;
-    public Visitors(string name, Gender sex, string id,int money) : base(name, sex, id) {
+    public Visitors(string name, Gender sex, string id,int money) : base(name, sex) {
         this.money = money;
     }
     public override void status()

@@ -71,12 +71,12 @@ class Director
     public void attachAviaryToEmployee()
     {
         Console.WriteLine("Введите персональны номер сотрудника:");
-        string employeeId = Console.ReadLine();
+        Guid employeeId = Guid.Parse(Console.ReadLine());
         Employee employee = zoo.getEmployee().FirstOrDefault(a => a.id == employeeId);
         if (employee != null)
         {
             Console.WriteLine("Введите номер вольера");
-            string aviaryId = Console.ReadLine();
+            Guid aviaryId = Guid.Parse(Console.ReadLine());
             IAviary aviary = zoo.getAviarys().FirstOrDefault(a => a.getAviaryId() == aviaryId);
             if (aviary != null)
             {
@@ -96,12 +96,12 @@ class Director
     public void unpinAviary()
     {
         Console.WriteLine("Введите персональны номер сотрудника:");
-        string employeeId = Console.ReadLine();
+        Guid employeeId = Guid.Parse(Console.ReadLine());
         Employee employee = zoo.getEmployee().FirstOrDefault(a => a.id == employeeId);
         if (employee != null)
         {
             Console.WriteLine("Введите номер вольера");
-            string aviaryId = Console.ReadLine();
+            Guid aviaryId = Guid.Parse(Console.ReadLine());
             IAviary aviary = zoo.getAviarys().FirstOrDefault(a => a.getAviaryId() == aviaryId);
             if (aviary != null)
             {
@@ -213,7 +213,7 @@ class Director
             employee =>
             {
                 Console.WriteLine("Введите персональный номер сотрудника : ");
-                string employeeId = Console.ReadLine();
+                Guid employeeId = Guid.Parse(Console.ReadLine());
 
                 return employee.id.Equals(employeeId, StringComparison.OrdinalIgnoreCase);
             },
@@ -292,7 +292,7 @@ class Director
     public void getVisitorStatus()
     {
        Console.WriteLine("Введите номер билета посетителя : ");
-        string visitorId = Console.ReadLine();
+        Guid visitorId = Guid.Parse(Console.ReadLine());
         var visitorToGetStatus = zoo.getVisitors().FirstOrDefault(a => a.id == visitorId);
 
         if (visitorToGetStatus != null)
@@ -311,7 +311,7 @@ class Director
     public void getEmployeeStatus()
     {
        Console.WriteLine("Введите персональный номер сотрудника : ");
-        string employeeId = Console.ReadLine();
+        Guid employeeId = Guid.Parse(Console.ReadLine());
 
         var employeeToGetStatus = zoo.getEmployee().FirstOrDefault(a => a.id == employeeId);
 
@@ -330,7 +330,7 @@ class Director
     public void getAviaryStatus()
     {
         Console.WriteLine("Введите номер вольера:");
-        string aviaryNum = Console.ReadLine();
+        Guid aviaryNum = Guid.Parse(Console.ReadLine());
         var aviaryToGetStatus = zoo.getAviarys().FirstOrDefault(a => a.getAviaryId() == aviaryNum);
         if(aviaryToGetStatus != null)
         {
@@ -357,7 +357,7 @@ class Director
         if (animalToResettle != null)
         {
             Console.WriteLine("Введите номер вольера:");
-            string aviaryId = Console.ReadLine();
+            Guid aviaryId = Guid.Parse(Console.ReadLine());
             var newAnimalAviary = zoo.getAviarys().FirstOrDefault(a=>a.getAviaryId() == aviaryId);
 
             if (newAnimalAviary != null)

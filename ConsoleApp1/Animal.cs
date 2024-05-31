@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1;
 using  ZooSimulation;
 
-abstract class Animals
+abstract class Animals : Entity
 {
     public int saturation;
     public int hungerThreshold;
     public string name;
+    public Guid id;
     public IAviary aviary;
     public enum hungerStatus
     {

@@ -22,7 +22,7 @@ interface IAviary
 
     int getSecondContainer();
 
-    string getAviaryId();
+    Guid getAviaryId();
 
     List<Animals> getAnimals();
 
@@ -39,9 +39,8 @@ interface IAviary
     void feedEntity<T>(T entity, int container) where T : Animals;
 }
 
-class Aviary: IAviary
+class Aviary: Entity, IAviary
 {
-    public string aviaryId;
     private int maxAnimalAmount;
 
     public IPublicPart publicPart;
@@ -53,9 +52,8 @@ class Aviary: IAviary
     public RandomNumberGenerator randNumber;
     public List<Food> foodList;
  
-    public Aviary(string aviaryId)
+    public Aviary()
     {
-        this.aviaryId = aviaryId;
         maxAnimalAmount = 5;
         firstContainer = 0;
         secondContainer = 0;
@@ -66,6 +64,11 @@ class Aviary: IAviary
         foodList = new List<Food>();
     }
 
+    public Guid getAviaryId()
+    {
+        return id;
+    }
+
     public void moveToPublicPart(Animals animal)
     {
         if (privatePart.checkAnimal(animal))
@@ -74,7 +77,7 @@ class Aviary: IAviary
             publicPart.addAnimal(animal);
         }
     }
-
+    
     public void moveToPrivatePart(Animals animal)
     {
         if (publicPart.checkAnimal(animal))
@@ -121,7 +124,7 @@ class Aviary: IAviary
                 foodList.Add(firstBrand);
                 foodList.Add(secondBrand);
             }
-            else if (aviaryAnimals[0].GetType().Name == "Tiger")
+            else if (aviaryAnimals[0].GetType().Name == "Cat")
             {
                 FirstBrand firstBrand = new FirstBrand();
                 ThirdBrand thirdBrand = new ThirdBrand();
@@ -224,15 +227,12 @@ class Aviary: IAviary
         return secondContainer;
     }
 
-    public string getAviaryId()
-    {
-        return aviaryId;
-    }
-
     public List<Animals> getAnimals()
     {
         return aviaryAnimals;
     }
+    
+    
 
    public IPublicPart getPublicPart()
    {

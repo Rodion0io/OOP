@@ -9,7 +9,7 @@ class Employee : Humans
 {
     public string post;
     public List<IAviary>aviaryList;
-    public Employee(string name, Gender sex,string id, string post) : base(name, sex, id )
+    public Employee(string name, Gender sex,string id, string post) : base(name, sex)
     {
         this.post = post;
         aviaryList = new List<IAviary>();
