@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleApp1;
 
-interface IAviary
+public interface IAviary
 {
     void addAnimal(Animals newAnimal);
     void removeAnimal(Animals newAnimal);
@@ -48,6 +48,7 @@ class Aviary: Entity, IAviary
 
     public int firstContainer;
     public int secondContainer;
+    
     public List<Animals> aviaryAnimals;
     public RandomNumberGenerator randNumber;
     public List<Food> foodList;
@@ -115,7 +116,7 @@ class Aviary: Entity, IAviary
 
         if (aviaryAnimals.Count == 1)
         {
-            if (aviaryAnimals[0].GetType().Name == "Monkey")
+            if (aviaryAnimals[0].GetType().Name == "Kapibara")
             {
                 FirstBrand firstBrand = new FirstBrand();
                 SecondBrand secondBrand = new SecondBrand();
@@ -193,7 +194,7 @@ class Aviary: Entity, IAviary
 
     public void feedAnimal(Animals animal)
     {
-        int number = randNumber.GenerateRandomValueToFoodContainer();
+        int number = randNumber.GenerateRandomValueToFoodContainerAndMove();
 
         if (number == 0)
         {
@@ -243,4 +244,6 @@ class Aviary: Entity, IAviary
     {
         return privatePart;
     }
+
+    
 }

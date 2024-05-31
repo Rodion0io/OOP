@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using ConsoleApp1;
+using Microsoft.Win32;
 using ZooSimulation;
 
 class Timer
@@ -80,23 +82,24 @@ class Timer
 
     private void moveAnimals()
     {
-        RandomNumberGenerator generator = new RandomNumberGenerator();
-
-        foreach(Aviary aviarys in zoo.getAviarys())
+        int randNum = new RandomNumberGenerator().GenerateRandomValueToFoodContainerAndMove();
+        
+        foreach (Entity entity in zoo.Registry.OfType<Aviary>())
         {
-            int randNum = generator.GenerateRandomNumber(1, 20);
-
-            if(aviarys.publicPart.getAnimals().Count>0 && randNum%2==0)
+            if (entity is Aviary aviary)
             {
-                Animals animal = aviarys.publicPart.getAnimals()[random.Next(aviarys.publicPart.getAnimals().Count)];
-                aviarys.moveToPrivatePart(animal);
+                if(aviary.publicPart.getAnimals().Count > 0 && randNum == 1)
+                {
+                    Animals animal = aviary.publicPart.getAnimals()[random.Next(aviary.publicPart.getAnimals().Count)];
+                    aviary.moveToPrivatePart(animal);
+                }
+                if (aviary.privatePart.getAllAnimals().Count > 0 && randNum == 1)
+                {
+                    Animals animal = aviary.privatePart.getAllAnimals()[random.Next(aviary.privatePart.getAllAnimals().Count)];
+                    aviary.moveToPublicPart(animal);
+                }
             }
-
-            if (aviarys.privatePart.getAllAnimals().Count >0 && randNum%2!=0)
-            {
-                Animals animal = aviarys.privatePart.getAllAnimals()[random.Next(aviarys.privatePart.getAllAnimals().Count)];
-                aviarys.moveToPublicPart(animal);
-            }
+            
         }
     }
     private void OnFeedTimedEvent(Object source, ElapsedEventArgs e)
@@ -115,24 +118,25 @@ class Timer
 
     private void giveTreat()
     {
-        foreach(Visitors visitor in zoo.getVisitors())
+        foreach(Visitors visitor in zoo.Registry.OfType<Visitors>())
         {
-            foreach (IAviary aviary in zoo.getAviarys())
+            foreach (IAviary aviary in zoo.Registry.OfType<Aviary>())
             {
                 visitor.giveTreat(aviary.getPublicPart(), aviary.getAnimals()[random.Next(aviary.getAnimals().Count)]);
             }
         }
     }
+    
     private void OnTimedEvent(Object source, ElapsedEventArgs e)
     {
-        foreach(Employee employee in zoo.getEmployee())
+        foreach(Employee employee in zoo.Registry.OfType<Employee>())
         {
             employee.feedAviarys(zoo);
         }
 
         List<Animals> AnimalsIsHungry = new List<Animals>();
 
-        foreach (var animal in zoo.getAnimals())
+        foreach (var animal in zoo.Registry.OfType<Animals>())
         {
             if (animal.saturation >= 0)
             {

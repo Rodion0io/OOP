@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using ZooSimulation;
 
 
-class Monkey : Animals
+class Kapibara : Animals
 {
     protected override int defaultHungerThreshold => 50;
-    public Monkey(string name) : base(name) { }
+    public Kapibara(string name) : base(name) { }
 
     public override void voiceCommand()
     {
-        Console.WriteLine("Уу Аа уа");
+        Console.WriteLine("ъыъ");
     }
 }

@@ -5,18 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using ZooSimulation;
 
-class Employee : Humans
+public class Employee : Humans, IComparable<Employee>
 {
     public string post;
     public List<IAviary>aviaryList;
-    public Employee(string name, Gender sex,string id, string post) : base(name, sex)
+    public Employee(string name, Gender gender, string post) : base(name, gender)
     {
         this.post = post;
         aviaryList = new List<IAviary>();
     }
+    
+    public Guid getId()
+    {
+        return id;
+    }
+    
     public override void status()
     {
-        Console.WriteLine($"Имя:{name}, Пол:{sex}, Должность:{post}");
+        Console.WriteLine($"Имя:{name}, Пол:{gender}, Должность:{post}");
     }
 
     public void feedAviarys(Zoo zoo)
@@ -32,4 +38,8 @@ class Employee : Humans
     }
 
 
+    public int CompareTo(Employee? other)
+    {
+        throw new NotImplementedException();
+    }
 }

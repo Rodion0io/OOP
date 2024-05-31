@@ -12,8 +12,8 @@ class RandomNumberGenerator
     {
         return rnd.Next(minValue, maxValue);
     }
-
-    public int GenerateRandomValueToFoodContainer()
+    
+    public int GenerateRandomValueToFoodContainerAndMove()
     {
         return rnd.Next(0, 2);
     }

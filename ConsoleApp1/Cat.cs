@@ -12,6 +12,6 @@ class Cat : Animals
     public Cat(string name) : base(name) { }
     public override void voiceCommand()
     {
-        Console.WriteLine("Раар");
+        Console.WriteLine("chipi chipi chapa chapa");
     }
 }

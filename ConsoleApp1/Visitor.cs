@@ -6,19 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using ZooSimulation;
 
-class Visitors : Humans
+public class Visitors : Humans
 {
     public int money;
-    public Visitors(string name, Gender sex, string id,int money) : base(name, sex) {
+    public Visitors(string name, Gender gender,int money) : base(name, gender) {
         this.money = money;
     }
+
+    public Guid getId()
+    {
+        return id;
+    }
+    
     public override void status()
     {
-        Console.WriteLine($"Имя:{name}, Пол:{sex} Деньги:{money}");
+        Console.WriteLine($"Имя:{name}, Пол:{gender} Деньги:{money}");
     }
     public void giveTreat(IPublicPart openPart,Animals animal)
     {
-        if (money-50 >= 0) {
+        if (money - 50 >= 0) {
             if (openPart.checkAnimal(animal))
             {
                 

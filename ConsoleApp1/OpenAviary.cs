@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using ZooSimulation;
 
-interface IPublicPart
+public interface IPublicPart
 {
     void getPublicStatus();
 

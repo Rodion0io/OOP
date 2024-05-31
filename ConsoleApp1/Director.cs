@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using ConsoleApp1;
 using ZooSimulation;
 
 class Director
@@ -18,44 +19,113 @@ class Director
         this.generator = generator;
         this.timer = timer;
     }
+    
+    // public void DisplayEntities<T>(IEnumerable<T> entities, Func<T, string> displayFunc, string entityName, IComparer<T> comparer = null)
+    //     where T : IComparable<T>
+    // {
+    //     List<T> sortedEntities = new List<T>(entities);
+    //     if (comparer != null)
+    //     {
+    //         sortedEntities.Sort(comparer);
+    //     }
+    //     else
+    //     {
+    //         sortedEntities.Sort();
+    //     }
+    //
+    //     Console.WriteLine($"Список {entityName}:");
+    //     foreach (var entity in sortedEntities)
+    //     {
+    //         Console.WriteLine(displayFunc(entity));
+    //     }
+    // }
 
-    public void DisplayEntities<T>(IEnumerable<T> entities, Func<T, string> displayFunc, string entityName)
-    {
-        Console.WriteLine($"Список {entityName}:");
-
-        foreach (var entity in entities)
-        {
-            Console.WriteLine(displayFunc(entity));
-        }
-    }
+    // public void DisplayEntities<T>(IEnumerable<T> entities, Func<T, string> displayFunc, string entityName)
+    // {
+    //     Console.WriteLine($"Список {entityName}:");
+    //
+    //     foreach (var entity in entities)
+    //     {
+    //         Console.WriteLine(displayFunc(entity));
+    //     }
+    // } 
+    
+    // public void displayAnimals()
+    // {
+    //     DisplayEntities<ComparatorAnimals>(zoo.Registry.OfType<Animals>(), animal => $"Имя: {animal.name} Вид: {animal.GetType().Name}", "животных", new ComparatorAnimals());
+    // }
+    //
+    // public void displayEmployees()
+    // {
+    //     DisplayEntities(zoo.Registry.OfType<Employee>(), employee => $"Имя: {employee.name} Пол: {employee.gender}" +
+    //                                                                  $" Персональный номер: {employee.id} Должность: {employee.post}" +
+    //                                                                  $" Количество закрепленных вольеров: {employee.aviaryList.Count}", "сотрудников");
+    // }
+    //
+    // public void displayVisitors()
+    // {
+    //     DisplayEntities(zoo.Registry.OfType<Visitors>(), visitor => $"Имя: {visitor.name} Пол: {visitor.gender}" +
+    //                                                                 $" Номер билета: {visitor.id}  Количество денег:{visitor.money}", "посетителей");
+    // }
+    //
+    // public void displayAviarys()
+    // {
+    //     DisplayEntities(zoo.Registry.OfType<Aviary>(), aviary => $"Номер: {aviary.getAviaryId()}" +
+    //                                                                $" Количество животных:{aviary.getAnimals().Count} Запасы еды: Первый контейнер {aviary.getFirstContainer()}, Второй контейнер {aviary.getSecondContainer()}", "вольер");
+    // }
     
     public void displayAnimals()
     {
-        DisplayEntities(zoo.getAnimals(), animal => $"Имя: {animal.name} Вид: {animal.GetType().Name}", "животных");
+        List<Animals> sortedAnimals = new List<Animals>(zoo.Registry.OfType<Animals>());
+        sortedAnimals.Sort(new ComparatorAnimals());
+
+        Console.WriteLine("Список животных:");
+        foreach (var animal in sortedAnimals)
+        {
+            Console.WriteLine($"Имя: {animal.name} Вид: {animal.GetType().Name}");
+        }
     }
-    
+
     public void displayEmployees()
     {
-        DisplayEntities(zoo.getEmployee(), employee => $"Имя: {employee.name} Пол: {employee.sex}" +
-        $" Персональный номер: {employee.id} Должность: {employee.post}" +
-        $" Количество закрепленных вольеров: {employee.aviaryList.Count}", "сотрудников");
+        List<Employee> sortedEmployees = new List<Employee>(zoo.Registry.OfType<Employee>());
+        sortedEmployees.Sort(new ComporatorEmployee());
+
+        Console.WriteLine("Список сотрудников:");
+        foreach (var employee in sortedEmployees)
+        {
+            Console.WriteLine($"Имя: {employee.name} Пол: {employee.gender} Персональный номер: {employee.id} Должность: {employee.post} Количество закрепленных вольеров: {employee.aviaryList.Count}");
+        }
     }
 
     public void displayVisitors()
     {
-        DisplayEntities(zoo.getVisitors(), visitor => $"Имя: {visitor.name} Пол: {visitor.sex}" +
-        $" Номер билета: {visitor.id}  Количество денег:{visitor.money}", "посетителей");
+        List<Visitors> sortedVisitors = new List<Visitors>(zoo.Registry.OfType<Visitors>());
+        sortedVisitors.Sort(new ComporatorVisitor());
+
+        Console.WriteLine("Список посетителей:");
+        foreach (var visitor in sortedVisitors)
+        {
+            Console.WriteLine($"Имя: {visitor.name} Пол: {visitor.gender} Номер билета: {visitor.id} Количество денег: {visitor.money}");
+        }
     }
 
     public void displayAviarys()
     {
-        DisplayEntities(zoo.getAviarys(), aviary => $"Номер: {aviary.getAviaryId()}" +
-        $" Количество животных:{aviary.getAnimals().Count} Запасы еды: Первый контейнер {aviary.getFirstContainer()}, Второй контейнер {aviary.getSecondContainer()}", "вольер");
+        List<Aviary> sortedAviarys = new List<Aviary>(zoo.Registry.OfType<Aviary>());
+        sortedAviarys.Sort(new ComporatorAviary());
+
+        Console.WriteLine("Список вольеров:");
+        foreach (var aviary in sortedAviarys)
+        {
+            Console.WriteLine($"Номер: {aviary.getAviaryId()} Количество животных: {aviary.getAnimals().Count} Запасы еды: Первый контейнер {aviary.getFirstContainer()}, Второй контейнер {aviary.getSecondContainer()}");
+        }
     }
-    public void EditEntity<T>(List<T> entityList, Predicate<T> predicate, Action<T> editAction, string entityName)
+    
+    public void EditEntity<T>(IEnumerable<T> entityList, Predicate<T> predicate, Action<T> editAction, string entityName)
     {
         Console.WriteLine($"Введите данные для редактирования {entityName}:");
-        var entityToEdit = entityList.Find(predicate);
+        var entityToEdit = entityList.FirstOrDefault(x => predicate(x));
 
         if (entityToEdit != null)
         {
@@ -72,12 +142,12 @@ class Director
     {
         Console.WriteLine("Введите персональны номер сотрудника:");
         Guid employeeId = Guid.Parse(Console.ReadLine());
-        Employee employee = zoo.getEmployee().FirstOrDefault(a => a.id == employeeId);
+        Employee employee = zoo.Registry.OfType<Employee>().FirstOrDefault(a => a.id == employeeId);
         if (employee != null)
         {
             Console.WriteLine("Введите номер вольера");
             Guid aviaryId = Guid.Parse(Console.ReadLine());
-            IAviary aviary = zoo.getAviarys().FirstOrDefault(a => a.getAviaryId() == aviaryId);
+            IAviary aviary = zoo.Registry.OfType<Aviary>().FirstOrDefault(a => a.getAviaryId() == aviaryId);
             if (aviary != null)
             {
                 employee.aviaryList.Add(aviary);
@@ -97,12 +167,12 @@ class Director
     {
         Console.WriteLine("Введите персональны номер сотрудника:");
         Guid employeeId = Guid.Parse(Console.ReadLine());
-        Employee employee = zoo.getEmployee().FirstOrDefault(a => a.id == employeeId);
+        Employee employee = zoo.Registry.OfType<Employee>().FirstOrDefault(a => a.id == employeeId);
         if (employee != null)
         {
             Console.WriteLine("Введите номер вольера");
             Guid aviaryId = Guid.Parse(Console.ReadLine());
-            IAviary aviary = zoo.getAviarys().FirstOrDefault(a => a.getAviaryId() == aviaryId);
+            IAviary aviary = zoo.Registry.OfType<Aviary>().FirstOrDefault(a => a.getAviaryId() == aviaryId);
             if (aviary != null)
             {
                 employee.aviaryList.Remove(aviary);
@@ -129,7 +199,7 @@ class Director
 
     public void EditAnimal()
     {
-        EditEntity(zoo.getAnimals(),
+        EditEntity(zoo.Registry.OfType<Animals>(),
             animal =>
             {
                 Console.WriteLine("Текущее имя животного:");
@@ -168,7 +238,7 @@ class Director
 
     public void EditVisitor()
     {
-        EditEntity(zoo.getVisitors(),
+        EditEntity(zoo.Registry.OfType<Visitors>(),
             visitor =>
             {
                 Console.WriteLine("Введите номер билета посетителя : ");
@@ -183,15 +253,15 @@ class Director
 
                 Console.WriteLine("Новый пол посетителя:");
                 string visitorSex = Console.ReadLine();
-                Humans.Gender sex;
-                if(Enum.TryParse(visitorSex,out sex))
+                Humans.Gender gender;
+                if(Enum.TryParse(visitorSex,out gender))
                 {
-                    visitor.sex = sex;
+                    visitor.gender = gender;
                 }
                 else
                 {
                     Console.WriteLine("Неверное значения пола, установлено значение по умолчанию");
-                    visitor.sex = Visitors.Gender.Male;
+                    visitor.gender = Visitors.Gender.Male;
                 }
             },
             "посетитель");
@@ -209,13 +279,13 @@ class Director
 
     public void EditEmployee()
     {
-        EditEntity(zoo.getEmployee(),
+        EditEntity(zoo.Registry.OfType<Employee>(),
             employee =>
             {
                 Console.WriteLine("Введите персональный номер сотрудника : ");
                 Guid employeeId = Guid.Parse(Console.ReadLine());
 
-                return employee.id.Equals(employeeId, StringComparison.OrdinalIgnoreCase);
+                return employeeId == employee.getId();
             },
             employee =>
             {
@@ -225,15 +295,15 @@ class Director
                 Console.WriteLine("Новый пол сотрудника:");
                 
                 string employeeSex = Console.ReadLine();
-                Humans.Gender sex;
-                if(Enum.TryParse(employeeSex,out sex))
+                Humans.Gender gender;
+                if(Enum.TryParse(employeeSex,out gender))
                 {
-                    employee.sex = sex;
+                    employee.gender = gender;
                 }
                 else
                 {
                     Console.WriteLine("Вы ввели неверное значение пола, установлено значение по умолчанию");
-                    employee.sex = Employee.Gender.Male;
+                    employee.gender = Employee.Gender.Male;
                 }
 
                 Console.WriteLine("Новая должность сотрудника:");
@@ -251,7 +321,7 @@ class Director
         Console.WriteLine("Введите вид животного: ");
         string animalType = Console.ReadLine();
 
-        var animalStatus = zoo.getAnimals().FirstOrDefault(a => a.name == animalName &&
+        var animalStatus = zoo.Registry.OfType<Animals>().FirstOrDefault(a => a.name == animalName &&
         a.GetType().Name == animalType);
 
         if (animalStatus != null)
@@ -273,8 +343,8 @@ class Director
         Console.WriteLine("Введите вид животного");
         string animalType = Console.ReadLine();
 
-        var animalVoice = zoo.getAnimals().FirstOrDefault(a => a.name == animalName &&
-        a.GetType().Name == animalType);
+        var animalVoice = zoo.Registry.OfType<Animals>().FirstOrDefault(a => a.name == animalName &&
+                                                                              a.GetType().Name == animalType);
 
         if (animalVoice != null)
         {
@@ -293,7 +363,7 @@ class Director
     {
        Console.WriteLine("Введите номер билета посетителя : ");
         Guid visitorId = Guid.Parse(Console.ReadLine());
-        var visitorToGetStatus = zoo.getVisitors().FirstOrDefault(a => a.id == visitorId);
+        var visitorToGetStatus = zoo.Registry.OfType<Visitors>().FirstOrDefault(a => a.id == visitorId);
 
         if (visitorToGetStatus != null)
         {
@@ -313,7 +383,7 @@ class Director
        Console.WriteLine("Введите персональный номер сотрудника : ");
         Guid employeeId = Guid.Parse(Console.ReadLine());
 
-        var employeeToGetStatus = zoo.getEmployee().FirstOrDefault(a => a.id == employeeId);
+        var employeeToGetStatus = zoo.Registry.OfType<Employee>().FirstOrDefault(a => a.id == employeeId);
 
         if (employeeToGetStatus != null)
         {
@@ -331,7 +401,7 @@ class Director
     {
         Console.WriteLine("Введите номер вольера:");
         Guid aviaryNum = Guid.Parse(Console.ReadLine());
-        var aviaryToGetStatus = zoo.getAviarys().FirstOrDefault(a => a.getAviaryId() == aviaryNum);
+        var aviaryToGetStatus = zoo.Registry.OfType<Aviary>().FirstOrDefault(a => a.getAviaryId() == aviaryNum);
         if(aviaryToGetStatus != null)
         {
             aviaryToGetStatus.getStatus();
@@ -351,14 +421,14 @@ class Director
         Console.WriteLine("Вид животного:");
         string animalType = Console.ReadLine();
 
-        var animalToResettle = zoo.getAnimals().FirstOrDefault(a => a.name == animalName &&
+        var animalToResettle = zoo.Registry.OfType<Animals>().FirstOrDefault(a => a.name == animalName &&
         a.GetType().Name == animalType);
 
         if (animalToResettle != null)
         {
             Console.WriteLine("Введите номер вольера:");
             Guid aviaryId = Guid.Parse(Console.ReadLine());
-            var newAnimalAviary = zoo.getAviarys().FirstOrDefault(a=>a.getAviaryId() == aviaryId);
+            var newAnimalAviary = zoo.Registry.OfType<Aviary>().FirstOrDefault(a=>a.getAviaryId() == aviaryId);
 
             if (newAnimalAviary != null)
             {

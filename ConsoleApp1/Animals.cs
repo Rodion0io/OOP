@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ConsoleApp1;
 using  ZooSimulation;
 
-abstract class Animals : Entity
+public abstract class Animals : Entity
 {
     public int saturation;
     public int hungerThreshold;
@@ -29,6 +29,12 @@ abstract class Animals : Entity
         this.name = name;
         hungerThreshold = defaultHungerThreshold;
     }
+
+    public Guid getId()
+    {
+        return id;
+    }
+    
     public abstract void voiceCommand();
     public void feed()
     {
@@ -46,4 +52,5 @@ abstract class Animals : Entity
     }
 
 
+    
 }

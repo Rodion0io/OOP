@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZooSimulation;
-interface IPrivatePart
+
+public interface IPrivatePart
 {
     void addAnimal(Animals animal);
 
@@ -18,7 +19,7 @@ interface IPrivatePart
     List<Animals> getAllAnimals();
 }
 
-class PrivatePart:IPrivatePart
+class PrivatePart: IPrivatePart
 {
     private List<Animals> privatePartList;
 

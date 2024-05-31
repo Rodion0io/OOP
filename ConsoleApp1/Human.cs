@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleApp1;
 using ZooSimulation;
-abstract class Humans : Entity
+
+public abstract class Humans : Entity
 {
     public enum Gender
     {
@@ -14,13 +15,13 @@ abstract class Humans : Entity
     }
 
     public string name;
-    public Gender sex;
+    public Gender gender;
     
     
-    public Humans(string name, Gender sex)
+    public Humans(string name, Gender gender)
     {
         this.name = name;
-        this.sex = sex;
+        this.gender = gender;
     }
 
     public abstract void status();
